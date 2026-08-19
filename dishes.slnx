@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="dishes.client/dishes.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="dishes.Server/dishes.Server.csproj" />
+</Solution>
