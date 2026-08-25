@@ -5,6 +5,30 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/dishes": {
+      "get": {
+        "tags": [
+          "Dishes"
+        ],
+        "description": "Get all dishes",
+        "operationId": "GetDishes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Dish"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/weatherforecast": {
       "get": {
         "tags": [
@@ -31,6 +55,50 @@
   },
   "components": {
     "schemas": {
+      "Dish": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ingredient"
+            }
+          }
+        }
+      },
+      "Ingredient": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "dishes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dish"
+            }
+          }
+        }
+      },
       "WeatherForecast": {
         "required": [
           "date",
@@ -70,6 +138,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Dishes"
+    },
     {
       "name": "dishes.Server"
     }

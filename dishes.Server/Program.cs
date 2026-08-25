@@ -1,3 +1,6 @@
+using dishes.Server.Data;
+using dishes.Server.Features.Dishes;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var corsPolicy = "CorsPolicy";
@@ -22,6 +25,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(
+    builder.Configuration["ConnectionStrings:AppConnectionString"]));
 
 var app = builder.Build();
 
@@ -44,6 +49,8 @@ var summaries = new[]
 };
 
 var apiGroup = app.MapGroup("/api");
+
+apiGroup.MapDishesEndpoints();
 
 apiGroup.MapGet("/weatherforecast", () =>
 {
