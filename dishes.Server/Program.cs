@@ -1,5 +1,6 @@
 using dishes.Server.Data;
 using dishes.Server.Features.Dishes;
+using dishes.Server.Features.Ingredients;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -12,6 +13,7 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddValidation();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
@@ -51,6 +53,7 @@ var summaries = new[]
 var apiGroup = app.MapGroup("/api");
 
 apiGroup.MapDishesEndpoints();
+apiGroup.MapIngredientsEndpoints();
 
 apiGroup.MapGet("/weatherforecast", () =>
 {

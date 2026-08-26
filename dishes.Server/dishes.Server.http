@@ -1,6 +1,50 @@
 @dishes.Server_HostAddress = http://localhost:5241
+@ingredientId = d28888e9-2ba9-473a-a40f-e38cb54f9b35
 
-GET {{dishes.Server_HostAddress}}/weatherforecast/
+### Dishes
+
+GET {{dishes.Server_HostAddress}}/api/dishes
+Accept: application/json
+
+###
+
+### Ingredients
+
+GET {{dishes.Server_HostAddress}}/api/ingredients
+Accept: application/json
+
+###
+
+GET {{dishes.Server_HostAddress}}/api/ingredients/{{ingredientId}}
+Accept: application/json
+
+###
+
+POST {{dishes.Server_HostAddress}}/api/ingredients
+Content-Type: application/json
+
+{
+  "name": "Saffron"
+}
+
+###
+
+PUT {{dishes.Server_HostAddress}}/api/ingredients/{{ingredientId}}
+Content-Type: application/json
+
+{
+  "name": "Saffron threads"
+}
+
+###
+
+DELETE {{dishes.Server_HostAddress}}/api/ingredients/{{ingredientId}}
+
+###
+
+### Weather
+
+GET {{dishes.Server_HostAddress}}/api/weatherforecast
 Accept: application/json
 
 ###
