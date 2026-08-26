@@ -13,6 +13,7 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddValidation();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
