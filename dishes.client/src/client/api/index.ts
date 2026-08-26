@@ -4,6 +4,8 @@
 // @ts-ignore
 import { DishesRequestBuilderRequestsMetadata, type DishesRequestBuilder } from './dishes/index.js';
 // @ts-ignore
+import { IngredientsRequestBuilderNavigationMetadata, IngredientsRequestBuilderRequestsMetadata, type IngredientsRequestBuilder } from './ingredients/index.js';
+// @ts-ignore
 import { type WeatherforecastRequestBuilder, WeatherforecastRequestBuilderRequestsMetadata } from './weatherforecast/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata } from '@microsoft/kiota-abstractions';
@@ -16,6 +18,10 @@ export interface ApiRequestBuilder extends BaseRequestBuilder<ApiRequestBuilder>
      * The dishes property
      */
     get dishes(): DishesRequestBuilder;
+    /**
+     * The ingredients property
+     */
+    get ingredients(): IngredientsRequestBuilder;
     /**
      * The weatherforecast property
      */
@@ -31,6 +37,10 @@ export const ApiRequestBuilderUriTemplate = "{+baseurl}/api";
 export const ApiRequestBuilderNavigationMetadata: Record<Exclude<keyof ApiRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
     dishes: {
         requestsMetadata: DishesRequestBuilderRequestsMetadata,
+    },
+    ingredients: {
+        requestsMetadata: IngredientsRequestBuilderRequestsMetadata,
+        navigationMetadata: IngredientsRequestBuilderNavigationMetadata,
     },
     weatherforecast: {
         requestsMetadata: WeatherforecastRequestBuilderRequestsMetadata,

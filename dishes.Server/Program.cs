@@ -1,5 +1,6 @@
 using dishes.Server.Data;
 using dishes.Server.Features.Dishes;
+using dishes.Server.Features.Ingredients;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -51,6 +52,7 @@ var summaries = new[]
 var apiGroup = app.MapGroup("/api");
 
 apiGroup.MapDishesEndpoints();
+apiGroup.MapIngredientsEndpoints();
 
 apiGroup.MapGet("/weatherforecast", () =>
 {
