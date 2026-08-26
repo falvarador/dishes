@@ -52,7 +52,7 @@ var summaries = new[]
 
 var apiGroup = app.MapGroup("/api");
 
-//apiGroup.MapDishesEndpoints();
+apiGroup.MapDishesEndpoints();
 apiGroup.MapIngredientsEndpoints();
 
 apiGroup.MapGet("/weatherforecast", () =>
