@@ -1,7 +1,12 @@
 <Solution>
-  <Project Path="dishes.client/dishes.client.esproj">
-    <Build />
-    <Deploy />
-  </Project>
-  <Project Path="dishes.Server/dishes.Server.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/dishes.client/dishes.client.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+    <Project Path="src/dishes.Server/dishes.Server.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/dishes.Server.Tests/dishes.Server.Tests.csproj" />
+  </Folder>
 </Solution>

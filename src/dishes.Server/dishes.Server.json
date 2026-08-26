@@ -5,30 +5,6 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/dishes": {
-      "get": {
-        "tags": [
-          "Dishes"
-        ],
-        "description": "Get all dishes",
-        "operationId": "GetDishes",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Dish"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/ingredients": {
       "get": {
         "tags": [
@@ -374,9 +350,6 @@
     }
   },
   "tags": [
-    {
-      "name": "Dishes"
-    },
     {
       "name": "Ingredients"
     },

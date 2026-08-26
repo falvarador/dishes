@@ -1,10 +1,38 @@
 @dishes.Server_HostAddress = http://localhost:5241
 @ingredientId = d28888e9-2ba9-473a-a40f-e38cb54f9b35
+@dishId = eacc5169-b2a7-41ad-92c3-dbb1a5e7af06
 
 ### Dishes
 
 GET {{dishes.Server_HostAddress}}/api/dishes
 Accept: application/json
+
+###
+
+GET {{dishes.Server_HostAddress}}/api/dishes/{{dishId}}
+Accept: application/json
+
+###
+
+POST {{dishes.Server_HostAddress}}/api/dishes
+Content-Type: application/json
+
+{
+  "name": "Spaghetti Carbonara"
+}
+
+###
+
+PUT {{dishes.Server_HostAddress}}/api/dishes/{{dishId}}
+Content-Type: application/json
+
+{
+  "name": "Flemish Beef stew"
+}
+
+###
+
+DELETE {{dishes.Server_HostAddress}}/api/dishes/{{dishId}}
 
 ###
 
