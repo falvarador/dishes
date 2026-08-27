@@ -25,6 +25,15 @@ export function createDishRequestFromDiscriminatorValue(parseNode: ParseNode | u
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {DishResponse}
+ */
+// @ts-ignore
+export function createDishResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoDishResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {HttpValidationProblemDetails_errors}
  */
 // @ts-ignore
@@ -61,6 +70,15 @@ export function createIngredientRequestFromDiscriminatorValue(parseNode: ParseNo
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {IngredientResponse}
+ */
+// @ts-ignore
+export function createIngredientResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoIngredientResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {WeatherForecast}
  */
 // @ts-ignore
@@ -89,6 +107,18 @@ export function deserializeIntoDish(dish: Partial<Dish> | undefined = {}) : Reco
 export function deserializeIntoDishRequest(dishRequest: Partial<DishRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
         "name": n => { dishRequest.name = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param DishResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoDishResponse(dishResponse: Partial<DishResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "id": n => { dishResponse.id = n.getGuidValue(); },
+        "name": n => { dishResponse.name = n.getStringValue(); },
     }
 }
 /**
@@ -143,6 +173,18 @@ export function deserializeIntoIngredientRequest(ingredientRequest: Partial<Ingr
 }
 /**
  * The deserialization information for the current model
+ * @param IngredientResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoIngredientResponse(ingredientResponse: Partial<IngredientResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "id": n => { ingredientResponse.id = n.getGuidValue(); },
+        "name": n => { ingredientResponse.name = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param WeatherForecast The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -170,6 +212,16 @@ export interface Dish extends AdditionalDataHolder, Parsable {
     name?: string | null;
 }
 export interface DishRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The name property
+     */
+    name?: string | null;
+}
+export interface DishResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The id property
+     */
+    id?: Guid | null;
     /**
      * The name property
      */
@@ -223,6 +275,16 @@ export interface IngredientRequest extends AdditionalDataHolder, Parsable {
      */
     name?: string | null;
 }
+export interface IngredientResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+}
 /**
  * Serializes information the current object
  * @param Dish The instance to serialize from.
@@ -248,6 +310,19 @@ export function serializeDishRequest(writer: SerializationWriter, dishRequest: P
     if (!dishRequest || isSerializingDerivedType) { return; }
     writer.writeStringValue("name", dishRequest.name);
     writer.writeAdditionalData(dishRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param DishResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeDishResponse(writer: SerializationWriter, dishResponse: Partial<DishResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!dishResponse || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("id", dishResponse.id);
+    writer.writeStringValue("name", dishResponse.name);
+    writer.writeAdditionalData(dishResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -302,6 +377,19 @@ export function serializeIngredientRequest(writer: SerializationWriter, ingredie
     if (!ingredientRequest || isSerializingDerivedType) { return; }
     writer.writeStringValue("name", ingredientRequest.name);
     writer.writeAdditionalData(ingredientRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param IngredientResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeIngredientResponse(writer: SerializationWriter, ingredientResponse: Partial<IngredientResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!ingredientResponse || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("id", ingredientResponse.id);
+    writer.writeStringValue("name", ingredientResponse.name);
+    writer.writeAdditionalData(ingredientResponse.additionalData);
 }
 /**
  * Serializes information the current object

@@ -11,7 +11,9 @@ public static class GetIngredientsHandler
         var ingredients = await context.Ingredients
             .ToListAsync(cancellationToken);
 
-        return Results.Ok(ingredients);
+        var response = ingredients.Select(i => new IngredientResponse(i.Id, i.Name));
+
+        return Results.Ok(response);
     }
 
     public static IEndpointRouteBuilder MapGetIngredients(this IEndpointRouteBuilder routes)
@@ -19,7 +21,7 @@ public static class GetIngredientsHandler
         routes.MapGet("/", HandleAsync)
             .WithName("GetIngredients")
             .WithDescription("Get all ingredients")
-            .Produces<IEnumerable<Ingredient>>(StatusCodes.Status200OK);
+            .Produces<IEnumerable<IngredientResponse>>(StatusCodes.Status200OK);
 
         return routes;
     }

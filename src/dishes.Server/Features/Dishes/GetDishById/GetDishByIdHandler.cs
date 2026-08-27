@@ -13,7 +13,7 @@ public static class GetDishByIdHandler
 
         return dish is null
             ? Results.NotFound()
-            : Results.Ok(dish);
+            : Results.Ok(new DishResponse(dish.Id, dish.Name));
     }
 
     public static IEndpointRouteBuilder MapGetDishById(this IEndpointRouteBuilder routes)
@@ -21,7 +21,7 @@ public static class GetDishByIdHandler
         routes.MapGet("/{id}", HandleAsync)
             .WithName("GetDishById")
             .WithDescription("Get a dish by id")
-            .Produces<Dish>(StatusCodes.Status200OK)
+            .Produces<DishResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
         return routes;

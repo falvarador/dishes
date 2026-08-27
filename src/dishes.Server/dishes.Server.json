@@ -20,7 +20,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Dish"
+                    "$ref": "#/components/schemas/DishResponse"
                   }
                 }
               }
@@ -92,7 +92,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Dish"
+                  "$ref": "#/components/schemas/DishResponse"
                 }
               }
             }
@@ -197,7 +197,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Ingredient"
+                    "$ref": "#/components/schemas/IngredientResponse"
                   }
                 }
               }
@@ -269,7 +269,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ingredient"
+                  "$ref": "#/components/schemas/IngredientResponse"
                 }
               }
             }
@@ -419,6 +419,22 @@
           }
         }
       },
+      "DishResponse": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "HttpValidationProblemDetails": {
         "type": "object",
         "properties": {
@@ -496,6 +512,22 @@
         "properties": {
           "name": {
             "maxLength": 200,
+            "type": "string"
+          }
+        }
+      },
+      "IngredientResponse": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
             "type": "string"
           }
         }

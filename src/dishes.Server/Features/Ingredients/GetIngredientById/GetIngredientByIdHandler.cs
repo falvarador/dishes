@@ -13,7 +13,7 @@ public static class GetIngredientByIdHandler
 
         return ingredient is null
             ? Results.NotFound()
-            : Results.Ok(ingredient);
+            : Results.Ok(new IngredientResponse(ingredient.Id, ingredient.Name));
     }
 
     public static IEndpointRouteBuilder MapGetIngredientById(this IEndpointRouteBuilder routes)
@@ -21,7 +21,7 @@ public static class GetIngredientByIdHandler
         routes.MapGet("/{id}", HandleAsync)
             .WithName("GetIngredientById")
             .WithDescription("Get an ingredient by id")
-            .Produces<Ingredient>(StatusCodes.Status200OK)
+            .Produces<IngredientResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
         return routes;
