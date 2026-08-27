@@ -1,6 +1,8 @@
 using dishes.Server.Data;
 using dishes.Server.Features.Dishes;
 using dishes.Server.Features.Ingredients;
+using dishes.Server.Features.Recipes;
+using dishes.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -14,6 +16,7 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddValidation();
+builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
@@ -35,6 +38,9 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.MapStaticAssets();
 
+// Configure static files for recipe images
+app.UseStaticFiles();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -54,6 +60,7 @@ var apiGroup = app.MapGroup("/api");
 
 apiGroup.MapDishesEndpoints();
 apiGroup.MapIngredientsEndpoints();
+apiGroup.MapRecipesEndpoints();
 
 apiGroup.MapGet("/weatherforecast", () =>
 {

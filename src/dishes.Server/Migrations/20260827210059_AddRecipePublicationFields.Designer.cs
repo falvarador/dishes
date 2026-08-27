@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dishes.Server.Data;
 
@@ -10,9 +11,11 @@ using dishes.Server.Data;
 namespace dishes.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260827210059_AddRecipePublicationFields")]
+    partial class AddRecipePublicationFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.11");
@@ -751,62 +754,6 @@ namespace dishes.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeFavorite", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("RecipeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("UserId", "RecipeId")
-                        .IsUnique();
-
-                    b.ToTable("UserRecipeFavorites");
-                });
-
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeRating", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("RecipeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("UserId", "RecipeId")
-                        .IsUnique();
-
-                    b.ToTable("UserRecipeRatings");
-                });
-
             modelBuilder.Entity("DishIngredient", b =>
                 {
                     b.HasOne("dishes.Server.Data.Entities.Dish", null)
@@ -882,39 +829,13 @@ namespace dishes.Server.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeFavorite", b =>
-                {
-                    b.HasOne("dishes.Server.Data.Entities.Recipe", "Recipe")
-                        .WithMany("Favorites")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeRating", b =>
-                {
-                    b.HasOne("dishes.Server.Data.Entities.Recipe", "Recipe")
-                        .WithMany("Ratings")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
             modelBuilder.Entity("dishes.Server.Data.Entities.Recipe", b =>
                 {
                     b.Navigation("Categories");
 
-                    b.Navigation("Favorites");
-
                     b.Navigation("Ingredients");
 
                     b.Navigation("Instructions");
-
-                    b.Navigation("Ratings");
 
                     b.Navigation("Tags");
                 });

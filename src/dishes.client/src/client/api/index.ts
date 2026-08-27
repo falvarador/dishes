@@ -6,6 +6,8 @@ import { DishesRequestBuilderNavigationMetadata, DishesRequestBuilderRequestsMet
 // @ts-ignore
 import { IngredientsRequestBuilderNavigationMetadata, IngredientsRequestBuilderRequestsMetadata, type IngredientsRequestBuilder } from './ingredients/index.js';
 // @ts-ignore
+import { RecipesRequestBuilderNavigationMetadata, RecipesRequestBuilderRequestsMetadata, type RecipesRequestBuilder } from './recipes/index.js';
+// @ts-ignore
 import { type WeatherforecastRequestBuilder, WeatherforecastRequestBuilderRequestsMetadata } from './weatherforecast/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata } from '@microsoft/kiota-abstractions';
@@ -22,6 +24,10 @@ export interface ApiRequestBuilder extends BaseRequestBuilder<ApiRequestBuilder>
      * The ingredients property
      */
     get ingredients(): IngredientsRequestBuilder;
+    /**
+     * The recipes property
+     */
+    get recipes(): RecipesRequestBuilder;
     /**
      * The weatherforecast property
      */
@@ -42,6 +48,10 @@ export const ApiRequestBuilderNavigationMetadata: Record<Exclude<keyof ApiReques
     ingredients: {
         requestsMetadata: IngredientsRequestBuilderRequestsMetadata,
         navigationMetadata: IngredientsRequestBuilderNavigationMetadata,
+    },
+    recipes: {
+        requestsMetadata: RecipesRequestBuilderRequestsMetadata,
+        navigationMetadata: RecipesRequestBuilderNavigationMetadata,
     },
     weatherforecast: {
         requestsMetadata: WeatherforecastRequestBuilderRequestsMetadata,

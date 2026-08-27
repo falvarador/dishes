@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dishes.Server.Data;
 
@@ -10,9 +11,11 @@ using dishes.Server.Data;
 namespace dishes.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260827204215_AddRecipeSeeding")]
+    partial class AddRecipeSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.11");
@@ -451,12 +454,6 @@ namespace dishes.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PublishedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -474,27 +471,25 @@ namespace dishes.Server.Migrations
                         {
                             Id = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
                             CoverPhotoPath = "/images/carbonara.jpg",
-                            CreatedAt = new DateTime(2024, 11, 15, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 7, 28, 20, 42, 14, 969, DateTimeKind.Utc).AddTicks(1065),
                             CreatorId = new Guid("aa1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c"),
                             Description = "Classic Italian pasta with eggs, cheese, and bacon",
                             Difficulty = "Easy",
                             PrepTime = "30 mins",
-                            Status = 0,
                             Title = "Spaghetti Carbonara",
-                            UpdatedAt = new DateTime(2024, 11, 15, 12, 0, 0, 0, DateTimeKind.Utc)
+                            UpdatedAt = new DateTime(2026, 7, 28, 20, 42, 14, 969, DateTimeKind.Utc).AddTicks(1557)
                         },
                         new
                         {
                             Id = new Guid("bf2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e"),
                             CoverPhotoPath = "/images/beefstew.jpg",
-                            CreatedAt = new DateTime(2024, 11, 25, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 8, 7, 20, 42, 14, 969, DateTimeKind.Utc).AddTicks(1932),
                             CreatorId = new Guid("aa1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c"),
                             Description = "Hearty beef stew with vegetables and rich gravy",
                             Difficulty = "Medium",
                             PrepTime = "2 hours",
-                            Status = 0,
                             Title = "Beef Stew",
-                            UpdatedAt = new DateTime(2024, 11, 25, 12, 0, 0, 0, DateTimeKind.Utc)
+                            UpdatedAt = new DateTime(2026, 8, 7, 20, 42, 14, 969, DateTimeKind.Utc).AddTicks(1933)
                         });
                 });
 
@@ -751,62 +746,6 @@ namespace dishes.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeFavorite", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("RecipeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("UserId", "RecipeId")
-                        .IsUnique();
-
-                    b.ToTable("UserRecipeFavorites");
-                });
-
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeRating", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("RecipeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("UserId", "RecipeId")
-                        .IsUnique();
-
-                    b.ToTable("UserRecipeRatings");
-                });
-
             modelBuilder.Entity("DishIngredient", b =>
                 {
                     b.HasOne("dishes.Server.Data.Entities.Dish", null)
@@ -882,39 +821,13 @@ namespace dishes.Server.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeFavorite", b =>
-                {
-                    b.HasOne("dishes.Server.Data.Entities.Recipe", "Recipe")
-                        .WithMany("Favorites")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeRating", b =>
-                {
-                    b.HasOne("dishes.Server.Data.Entities.Recipe", "Recipe")
-                        .WithMany("Ratings")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
             modelBuilder.Entity("dishes.Server.Data.Entities.Recipe", b =>
                 {
                     b.Navigation("Categories");
 
-                    b.Navigation("Favorites");
-
                     b.Navigation("Ingredients");
 
                     b.Navigation("Instructions");
-
-                    b.Navigation("Ratings");
 
                     b.Navigation("Tags");
                 });

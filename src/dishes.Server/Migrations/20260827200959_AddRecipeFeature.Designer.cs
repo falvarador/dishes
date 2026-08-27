@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dishes.Server.Data;
 
@@ -10,9 +11,11 @@ using dishes.Server.Data;
 namespace dishes.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260827200959_AddRecipeFeature")]
+    partial class AddRecipeFeature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.11");
@@ -451,12 +454,6 @@ namespace dishes.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PublishedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -468,34 +465,6 @@ namespace dishes.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Recipes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            CoverPhotoPath = "/images/carbonara.jpg",
-                            CreatedAt = new DateTime(2024, 11, 15, 12, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = new Guid("aa1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c"),
-                            Description = "Classic Italian pasta with eggs, cheese, and bacon",
-                            Difficulty = "Easy",
-                            PrepTime = "30 mins",
-                            Status = 0,
-                            Title = "Spaghetti Carbonara",
-                            UpdatedAt = new DateTime(2024, 11, 15, 12, 0, 0, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            Id = new Guid("bf2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e"),
-                            CoverPhotoPath = "/images/beefstew.jpg",
-                            CreatedAt = new DateTime(2024, 11, 25, 12, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = new Guid("aa1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c"),
-                            Description = "Hearty beef stew with vegetables and rich gravy",
-                            Difficulty = "Medium",
-                            PrepTime = "2 hours",
-                            Status = 0,
-                            Title = "Beef Stew",
-                            UpdatedAt = new DateTime(2024, 11, 25, 12, 0, 0, 0, DateTimeKind.Utc)
-                        });
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.RecipeCategory", b =>
@@ -588,40 +557,6 @@ namespace dishes.Server.Migrations
                     b.HasIndex("RecipeId");
 
                     b.ToTable("RecipeIngredients");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ca3d4e5f-6a7b-8c9d-0e1f-2a3b4c5d6e7f"),
-                            IngredientName = "Spaghetti",
-                            Quantity = 400m,
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            Unit = "g"
-                        },
-                        new
-                        {
-                            Id = new Guid("db4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a"),
-                            IngredientName = "Eggs",
-                            Quantity = 4m,
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            Unit = "whole"
-                        },
-                        new
-                        {
-                            Id = new Guid("ec5f6a7b-8c9d-0e1f-2a3b-4c5d6e7f8a9b"),
-                            IngredientName = "Parmesan Cheese",
-                            Quantity = 200m,
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            Unit = "g"
-                        },
-                        new
-                        {
-                            Id = new Guid("fd6a7b8c-9d0e-1f2a-3b4c-5d6e7f8a9b0c"),
-                            IngredientName = "Bacon",
-                            Quantity = 150m,
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            Unit = "g"
-                        });
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.RecipeInstruction", b =>
@@ -646,36 +581,6 @@ namespace dishes.Server.Migrations
                     b.HasIndex("RecipeId");
 
                     b.ToTable("RecipeInstructions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ae7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d"),
-                            Description = "Cook spaghetti in salted boiling water until al dente",
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            StepNumber = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("bf8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e"),
-                            Description = "Cook bacon until crispy and chop into pieces",
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            StepNumber = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("ca9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f"),
-                            Description = "Mix eggs and grated cheese in a bowl",
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            StepNumber = 3
-                        },
-                        new
-                        {
-                            Id = new Guid("db0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a"),
-                            Description = "Drain pasta and mix with bacon, then toss with egg mixture off heat",
-                            RecipeId = new Guid("af1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"),
-                            StepNumber = 4
-                        });
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.RecipeRecipeCategory", b =>
@@ -722,89 +627,6 @@ namespace dishes.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RecipeTags");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("fa9f7e22-fbb7-46e5-ead0-bf3a0a5f1e2f"),
-                            Name = "Vegetarian"
-                        },
-                        new
-                        {
-                            Id = new Guid("ab0a8f33-acc8-47f6-fbe1-ca4b1b6a2f3a"),
-                            Name = "Vegan"
-                        },
-                        new
-                        {
-                            Id = new Guid("bc1b9a44-bdd9-48a7-acb2-db5c2c7b3a4b"),
-                            Name = "Gluten-Free"
-                        },
-                        new
-                        {
-                            Id = new Guid("cd2c0b55-ceea-49b8-bdc3-ec6d3d8c4b5c"),
-                            Name = "Quick"
-                        },
-                        new
-                        {
-                            Id = new Guid("de3d1c66-dffb-40c9-ceb4-fd7e4e9d5c6d"),
-                            Name = "Comfort Food"
-                        });
-                });
-
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeFavorite", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("RecipeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("UserId", "RecipeId")
-                        .IsUnique();
-
-                    b.ToTable("UserRecipeFavorites");
-                });
-
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeRating", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("RecipeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("UserId", "RecipeId")
-                        .IsUnique();
-
-                    b.ToTable("UserRecipeRatings");
                 });
 
             modelBuilder.Entity("DishIngredient", b =>
@@ -882,39 +704,13 @@ namespace dishes.Server.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeFavorite", b =>
-                {
-                    b.HasOne("dishes.Server.Data.Entities.Recipe", "Recipe")
-                        .WithMany("Favorites")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
-            modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeRating", b =>
-                {
-                    b.HasOne("dishes.Server.Data.Entities.Recipe", "Recipe")
-                        .WithMany("Ratings")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
             modelBuilder.Entity("dishes.Server.Data.Entities.Recipe", b =>
                 {
                     b.Navigation("Categories");
 
-                    b.Navigation("Favorites");
-
                     b.Navigation("Ingredients");
 
                     b.Navigation("Instructions");
-
-                    b.Navigation("Ratings");
 
                     b.Navigation("Tags");
                 });
