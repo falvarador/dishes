@@ -7,6 +7,15 @@ import { createUntypedNodeFromDiscriminatorValue, type AdditionalDataHolder, typ
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CreateRecipeRequest}
+ */
+// @ts-ignore
+export function createCreateRecipeRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCreateRecipeRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {Dish}
  */
 // @ts-ignore
@@ -34,6 +43,15 @@ export function createDishResponseFromDiscriminatorValue(parseNode: ParseNode | 
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {FavoriteResponse}
+ */
+// @ts-ignore
+export function createFavoriteResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoFavoriteResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {HttpValidationProblemDetails_errors}
  */
 // @ts-ignore
@@ -48,6 +66,15 @@ export function createHttpValidationProblemDetails_errorsFromDiscriminatorValue(
 // @ts-ignore
 export function createHttpValidationProblemDetailsFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoHttpValidationProblemDetails;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {ImageUploadResponse}
+ */
+// @ts-ignore
+export function createImageUploadResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoImageUploadResponse;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -79,11 +106,190 @@ export function createIngredientResponseFromDiscriminatorValue(parseNode: ParseN
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {KeyValuePairOfstringAndStringValues}
+ */
+// @ts-ignore
+export function createKeyValuePairOfstringAndStringValuesFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoKeyValuePairOfstringAndStringValues;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {PaginatedRecipesResponse}
+ */
+// @ts-ignore
+export function createPaginatedRecipesResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoPaginatedRecipesResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RateRecipeRequest}
+ */
+// @ts-ignore
+export function createRateRecipeRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRateRecipeRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RatingResponse}
+ */
+// @ts-ignore
+export function createRatingResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRatingResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeCategoryResponse}
+ */
+// @ts-ignore
+export function createRecipeCategoryResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeCategoryResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeDetailResponse}
+ */
+// @ts-ignore
+export function createRecipeDetailResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeDetailResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeIngredientDto}
+ */
+// @ts-ignore
+export function createRecipeIngredientDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeIngredientDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeIngredientResponse}
+ */
+// @ts-ignore
+export function createRecipeIngredientResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeIngredientResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeInstructionDto}
+ */
+// @ts-ignore
+export function createRecipeInstructionDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeInstructionDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeInstructionResponse}
+ */
+// @ts-ignore
+export function createRecipeInstructionResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeInstructionResponse;
+}
+export interface CreateRecipeRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The categoryIds property
+     */
+    categoryIds?: Guid[] | null;
+    /**
+     * The coverPhotoPath property
+     */
+    coverPhotoPath?: string | null;
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The difficulty property
+     */
+    difficulty?: string | null;
+    /**
+     * The ingredients property
+     */
+    ingredients?: RecipeIngredientDto[] | null;
+    /**
+     * The instructions property
+     */
+    instructions?: RecipeInstructionDto[] | null;
+    /**
+     * The isPublished property
+     */
+    isPublished?: boolean | null;
+    /**
+     * The prepTime property
+     */
+    prepTime?: string | null;
+    /**
+     * The tagIds property
+     */
+    tagIds?: Guid[] | null;
+    /**
+     * The title property
+     */
+    title?: string | null;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeResponse}
+ */
+// @ts-ignore
+export function createRecipeResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeSummaryResponse}
+ */
+// @ts-ignore
+export function createRecipeSummaryResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeSummaryResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RecipeTagResponse}
+ */
+// @ts-ignore
+export function createRecipeTagResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRecipeTagResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {WeatherForecast}
  */
 // @ts-ignore
 export function createWeatherForecastFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoWeatherForecast;
+}
+/**
+ * The deserialization information for the current model
+ * @param CreateRecipeRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCreateRecipeRequest(createRecipeRequest: Partial<CreateRecipeRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "categoryIds": n => { createRecipeRequest.categoryIds = n.getCollectionOfPrimitiveValues<Guid>("string"); },
+        "coverPhotoPath": n => { createRecipeRequest.coverPhotoPath = n.getStringValue(); },
+        "description": n => { createRecipeRequest.description = n.getStringValue(); },
+        "difficulty": n => { createRecipeRequest.difficulty = n.getStringValue(); },
+        "ingredients": n => { createRecipeRequest.ingredients = n.getCollectionOfObjectValues<RecipeIngredientDto>(createRecipeIngredientDtoFromDiscriminatorValue); },
+        "instructions": n => { createRecipeRequest.instructions = n.getCollectionOfObjectValues<RecipeInstructionDto>(createRecipeInstructionDtoFromDiscriminatorValue); },
+        "isPublished": n => { createRecipeRequest.isPublished = n.getBooleanValue() ?? false; },
+        "prepTime": n => { createRecipeRequest.prepTime = n.getStringValue(); },
+        "tagIds": n => { createRecipeRequest.tagIds = n.getCollectionOfPrimitiveValues<Guid>("string"); },
+        "title": n => { createRecipeRequest.title = n.getStringValue(); },
+    }
 }
 /**
  * The deserialization information for the current model
@@ -123,6 +329,19 @@ export function deserializeIntoDishResponse(dishResponse: Partial<DishResponse> 
 }
 /**
  * The deserialization information for the current model
+ * @param FavoriteResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoFavoriteResponse(favoriteResponse: Partial<FavoriteResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "createdAt": n => { favoriteResponse.createdAt = n.getDateValue(); },
+        "id": n => { favoriteResponse.id = n.getGuidValue(); },
+        "recipeId": n => { favoriteResponse.recipeId = n.getGuidValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param HttpValidationProblemDetails The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -145,6 +364,18 @@ export function deserializeIntoHttpValidationProblemDetails(httpValidationProble
 // @ts-ignore
 export function deserializeIntoHttpValidationProblemDetails_errors(httpValidationProblemDetails_errors: Partial<HttpValidationProblemDetails_errors> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param ImageUploadResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoImageUploadResponse(imageUploadResponse: Partial<ImageUploadResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "imagePath": n => { imageUploadResponse.imagePath = n.getStringValue(); },
+        "recipeId": n => { imageUploadResponse.recipeId = n.getGuidValue(); },
     }
 }
 /**
@@ -181,6 +412,204 @@ export function deserializeIntoIngredientResponse(ingredientResponse: Partial<In
     return {
         "id": n => { ingredientResponse.id = n.getGuidValue(); },
         "name": n => { ingredientResponse.name = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param KeyValuePairOfstringAndStringValues The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoKeyValuePairOfstringAndStringValues(keyValuePairOfstringAndStringValues: Partial<KeyValuePairOfstringAndStringValues> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "key": n => { keyValuePairOfstringAndStringValues.key = n.getStringValue(); },
+        "value": n => { keyValuePairOfstringAndStringValues.value = n.getCollectionOfPrimitiveValues<string>("string"); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param PaginatedRecipesResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoPaginatedRecipesResponse(paginatedRecipesResponse: Partial<PaginatedRecipesResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "data": n => { paginatedRecipesResponse.data = n.getCollectionOfObjectValues<RecipeSummaryResponse>(createRecipeSummaryResponseFromDiscriminatorValue); },
+        "hasNextPage": n => { paginatedRecipesResponse.hasNextPage = n.getBooleanValue(); },
+        "hasPreviousPage": n => { paginatedRecipesResponse.hasPreviousPage = n.getBooleanValue(); },
+        "page": n => { paginatedRecipesResponse.page = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "pageSize": n => { paginatedRecipesResponse.pageSize = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "totalCount": n => { paginatedRecipesResponse.totalCount = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "totalPages": n => { paginatedRecipesResponse.totalPages = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RateRecipeRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRateRecipeRequest(rateRecipeRequest: Partial<RateRecipeRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "rating": n => { rateRecipeRequest.rating = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RatingResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRatingResponse(ratingResponse: Partial<RatingResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "createdAt": n => { ratingResponse.createdAt = n.getDateValue(); },
+        "id": n => { ratingResponse.id = n.getGuidValue(); },
+        "rating": n => { ratingResponse.rating = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "recipeId": n => { ratingResponse.recipeId = n.getGuidValue(); },
+        "updatedAt": n => { ratingResponse.updatedAt = n.getDateValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeCategoryResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeCategoryResponse(recipeCategoryResponse: Partial<RecipeCategoryResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "id": n => { recipeCategoryResponse.id = n.getGuidValue(); },
+        "name": n => { recipeCategoryResponse.name = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeDetailResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeDetailResponse(recipeDetailResponse: Partial<RecipeDetailResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "categories": n => { recipeDetailResponse.categories = n.getCollectionOfObjectValues<RecipeCategoryResponse>(createRecipeCategoryResponseFromDiscriminatorValue); },
+        "coverPhotoPath": n => { recipeDetailResponse.coverPhotoPath = n.getStringValue(); },
+        "createdAt": n => { recipeDetailResponse.createdAt = n.getDateValue(); },
+        "creatorId": n => { recipeDetailResponse.creatorId = n.getGuidValue(); },
+        "description": n => { recipeDetailResponse.description = n.getStringValue(); },
+        "difficulty": n => { recipeDetailResponse.difficulty = n.getStringValue(); },
+        "id": n => { recipeDetailResponse.id = n.getGuidValue(); },
+        "ingredients": n => { recipeDetailResponse.ingredients = n.getCollectionOfObjectValues<RecipeIngredientResponse>(createRecipeIngredientResponseFromDiscriminatorValue); },
+        "instructions": n => { recipeDetailResponse.instructions = n.getCollectionOfObjectValues<RecipeInstructionResponse>(createRecipeInstructionResponseFromDiscriminatorValue); },
+        "isPublished": n => { recipeDetailResponse.isPublished = n.getBooleanValue(); },
+        "prepTime": n => { recipeDetailResponse.prepTime = n.getStringValue(); },
+        "tags": n => { recipeDetailResponse.tags = n.getCollectionOfObjectValues<RecipeTagResponse>(createRecipeTagResponseFromDiscriminatorValue); },
+        "title": n => { recipeDetailResponse.title = n.getStringValue(); },
+        "updatedAt": n => { recipeDetailResponse.updatedAt = n.getDateValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeIngredientDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeIngredientDto(recipeIngredientDto: Partial<RecipeIngredientDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "ingredientName": n => { recipeIngredientDto.ingredientName = n.getStringValue(); },
+        "quantity": n => { recipeIngredientDto.quantity = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "unit": n => { recipeIngredientDto.unit = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeIngredientResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeIngredientResponse(recipeIngredientResponse: Partial<RecipeIngredientResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "id": n => { recipeIngredientResponse.id = n.getGuidValue(); },
+        "ingredientName": n => { recipeIngredientResponse.ingredientName = n.getStringValue(); },
+        "quantity": n => { recipeIngredientResponse.quantity = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "unit": n => { recipeIngredientResponse.unit = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeInstructionDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeInstructionDto(recipeInstructionDto: Partial<RecipeInstructionDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "description": n => { recipeInstructionDto.description = n.getStringValue(); },
+        "stepNumber": n => { recipeInstructionDto.stepNumber = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeInstructionResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeInstructionResponse(recipeInstructionResponse: Partial<RecipeInstructionResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "description": n => { recipeInstructionResponse.description = n.getStringValue(); },
+        "id": n => { recipeInstructionResponse.id = n.getGuidValue(); },
+        "stepNumber": n => { recipeInstructionResponse.stepNumber = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeResponse(recipeResponse: Partial<RecipeResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "categories": n => { recipeResponse.categories = n.getCollectionOfObjectValues<RecipeCategoryResponse>(createRecipeCategoryResponseFromDiscriminatorValue); },
+        "coverPhotoPath": n => { recipeResponse.coverPhotoPath = n.getStringValue(); },
+        "createdAt": n => { recipeResponse.createdAt = n.getDateValue(); },
+        "creatorId": n => { recipeResponse.creatorId = n.getGuidValue(); },
+        "description": n => { recipeResponse.description = n.getStringValue(); },
+        "difficulty": n => { recipeResponse.difficulty = n.getStringValue(); },
+        "id": n => { recipeResponse.id = n.getGuidValue(); },
+        "ingredients": n => { recipeResponse.ingredients = n.getCollectionOfObjectValues<RecipeIngredientResponse>(createRecipeIngredientResponseFromDiscriminatorValue); },
+        "instructions": n => { recipeResponse.instructions = n.getCollectionOfObjectValues<RecipeInstructionResponse>(createRecipeInstructionResponseFromDiscriminatorValue); },
+        "isPublished": n => { recipeResponse.isPublished = n.getBooleanValue(); },
+        "prepTime": n => { recipeResponse.prepTime = n.getStringValue(); },
+        "tags": n => { recipeResponse.tags = n.getCollectionOfObjectValues<RecipeTagResponse>(createRecipeTagResponseFromDiscriminatorValue); },
+        "title": n => { recipeResponse.title = n.getStringValue(); },
+        "updatedAt": n => { recipeResponse.updatedAt = n.getDateValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeSummaryResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeSummaryResponse(recipeSummaryResponse: Partial<RecipeSummaryResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "averageRating": n => { recipeSummaryResponse.averageRating = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue) ?? 0; },
+        "coverPhotoPath": n => { recipeSummaryResponse.coverPhotoPath = n.getStringValue(); },
+        "createdAt": n => { recipeSummaryResponse.createdAt = n.getDateValue(); },
+        "creatorId": n => { recipeSummaryResponse.creatorId = n.getGuidValue(); },
+        "difficulty": n => { recipeSummaryResponse.difficulty = n.getStringValue(); },
+        "id": n => { recipeSummaryResponse.id = n.getGuidValue(); },
+        "isPublished": n => { recipeSummaryResponse.isPublished = n.getBooleanValue(); },
+        "ratingCount": n => { recipeSummaryResponse.ratingCount = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue) ?? 0; },
+        "title": n => { recipeSummaryResponse.title = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RecipeTagResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRecipeTagResponse(recipeTagResponse: Partial<RecipeTagResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "id": n => { recipeTagResponse.id = n.getGuidValue(); },
+        "name": n => { recipeTagResponse.name = n.getStringValue(); },
     }
 }
 /**
@@ -227,6 +656,20 @@ export interface DishResponse extends AdditionalDataHolder, Parsable {
      */
     name?: string | null;
 }
+export interface FavoriteResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The recipeId property
+     */
+    recipeId?: Guid | null;
+}
 export interface HttpValidationProblemDetails extends AdditionalDataHolder, ApiError, Parsable {
     /**
      * The detail property
@@ -254,6 +697,16 @@ export interface HttpValidationProblemDetails extends AdditionalDataHolder, ApiE
     type?: string | null;
 }
 export interface HttpValidationProblemDetails_errors extends AdditionalDataHolder, Parsable {
+}
+export interface ImageUploadResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The imagePath property
+     */
+    imagePath?: string | null;
+    /**
+     * The recipeId property
+     */
+    recipeId?: Guid | null;
 }
 export interface Ingredient extends AdditionalDataHolder, Parsable {
     /**
@@ -284,6 +737,325 @@ export interface IngredientResponse extends AdditionalDataHolder, Parsable {
      * The name property
      */
     name?: string | null;
+}
+export interface KeyValuePairOfstringAndStringValues extends AdditionalDataHolder, Parsable {
+    /**
+     * The key property
+     */
+    key?: string | null;
+    /**
+     * The value property
+     */
+    value?: string[] | null;
+}
+export interface PaginatedRecipesResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The data property
+     */
+    data?: RecipeSummaryResponse[] | null;
+    /**
+     * The hasNextPage property
+     */
+    hasNextPage?: boolean | null;
+    /**
+     * The hasPreviousPage property
+     */
+    hasPreviousPage?: boolean | null;
+    /**
+     * The page property
+     */
+    page?: UntypedNode | null;
+    /**
+     * The pageSize property
+     */
+    pageSize?: UntypedNode | null;
+    /**
+     * The totalCount property
+     */
+    totalCount?: UntypedNode | null;
+    /**
+     * The totalPages property
+     */
+    totalPages?: UntypedNode | null;
+}
+export interface RateRecipeRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The rating property
+     */
+    rating?: UntypedNode | null;
+}
+export interface RatingResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The rating property
+     */
+    rating?: UntypedNode | null;
+    /**
+     * The recipeId property
+     */
+    recipeId?: Guid | null;
+    /**
+     * The updatedAt property
+     */
+    updatedAt?: Date | null;
+}
+export interface RecipeCategoryResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+}
+export interface RecipeDetailResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The categories property
+     */
+    categories?: RecipeCategoryResponse[] | null;
+    /**
+     * The coverPhotoPath property
+     */
+    coverPhotoPath?: string | null;
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The creatorId property
+     */
+    creatorId?: Guid | null;
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The difficulty property
+     */
+    difficulty?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The ingredients property
+     */
+    ingredients?: RecipeIngredientResponse[] | null;
+    /**
+     * The instructions property
+     */
+    instructions?: RecipeInstructionResponse[] | null;
+    /**
+     * The isPublished property
+     */
+    isPublished?: boolean | null;
+    /**
+     * The prepTime property
+     */
+    prepTime?: string | null;
+    /**
+     * The tags property
+     */
+    tags?: RecipeTagResponse[] | null;
+    /**
+     * The title property
+     */
+    title?: string | null;
+    /**
+     * The updatedAt property
+     */
+    updatedAt?: Date | null;
+}
+export interface RecipeIngredientDto extends AdditionalDataHolder, Parsable {
+    /**
+     * The ingredientName property
+     */
+    ingredientName?: string | null;
+    /**
+     * The quantity property
+     */
+    quantity?: UntypedNode | null;
+    /**
+     * The unit property
+     */
+    unit?: string | null;
+}
+export interface RecipeIngredientResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The ingredientName property
+     */
+    ingredientName?: string | null;
+    /**
+     * The quantity property
+     */
+    quantity?: UntypedNode | null;
+    /**
+     * The unit property
+     */
+    unit?: string | null;
+}
+export interface RecipeInstructionDto extends AdditionalDataHolder, Parsable {
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The stepNumber property
+     */
+    stepNumber?: UntypedNode | null;
+}
+export interface RecipeInstructionResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The stepNumber property
+     */
+    stepNumber?: UntypedNode | null;
+}
+export interface RecipeResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The categories property
+     */
+    categories?: RecipeCategoryResponse[] | null;
+    /**
+     * The coverPhotoPath property
+     */
+    coverPhotoPath?: string | null;
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The creatorId property
+     */
+    creatorId?: Guid | null;
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The difficulty property
+     */
+    difficulty?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The ingredients property
+     */
+    ingredients?: RecipeIngredientResponse[] | null;
+    /**
+     * The instructions property
+     */
+    instructions?: RecipeInstructionResponse[] | null;
+    /**
+     * The isPublished property
+     */
+    isPublished?: boolean | null;
+    /**
+     * The prepTime property
+     */
+    prepTime?: string | null;
+    /**
+     * The tags property
+     */
+    tags?: RecipeTagResponse[] | null;
+    /**
+     * The title property
+     */
+    title?: string | null;
+    /**
+     * The updatedAt property
+     */
+    updatedAt?: Date | null;
+}
+export interface RecipeSummaryResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The averageRating property
+     */
+    averageRating?: UntypedNode | null;
+    /**
+     * The coverPhotoPath property
+     */
+    coverPhotoPath?: string | null;
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The creatorId property
+     */
+    creatorId?: Guid | null;
+    /**
+     * The difficulty property
+     */
+    difficulty?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The isPublished property
+     */
+    isPublished?: boolean | null;
+    /**
+     * The ratingCount property
+     */
+    ratingCount?: UntypedNode | null;
+    /**
+     * The title property
+     */
+    title?: string | null;
+}
+export interface RecipeTagResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+}
+/**
+ * Serializes information the current object
+ * @param CreateRecipeRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCreateRecipeRequest(writer: SerializationWriter, createRecipeRequest: Partial<CreateRecipeRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!createRecipeRequest || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfPrimitiveValues<Guid>("categoryIds", createRecipeRequest.categoryIds);
+    writer.writeStringValue("coverPhotoPath", createRecipeRequest.coverPhotoPath);
+    writer.writeStringValue("description", createRecipeRequest.description);
+    writer.writeStringValue("difficulty", createRecipeRequest.difficulty);
+    writer.writeCollectionOfObjectValues<RecipeIngredientDto>("ingredients", createRecipeRequest.ingredients, serializeRecipeIngredientDto);
+    writer.writeCollectionOfObjectValues<RecipeInstructionDto>("instructions", createRecipeRequest.instructions, serializeRecipeInstructionDto);
+    writer.writeBooleanValue("isPublished", createRecipeRequest.isPublished ?? false);
+    writer.writeStringValue("prepTime", createRecipeRequest.prepTime);
+    writer.writeCollectionOfPrimitiveValues<Guid>("tagIds", createRecipeRequest.tagIds);
+    writer.writeStringValue("title", createRecipeRequest.title);
+    writer.writeAdditionalData(createRecipeRequest.additionalData);
 }
 /**
  * Serializes information the current object
@@ -326,6 +1098,20 @@ export function serializeDishResponse(writer: SerializationWriter, dishResponse:
 }
 /**
  * Serializes information the current object
+ * @param FavoriteResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeFavoriteResponse(writer: SerializationWriter, favoriteResponse: Partial<FavoriteResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!favoriteResponse || isSerializingDerivedType) { return; }
+    writer.writeDateValue("createdAt", favoriteResponse.createdAt);
+    writer.writeGuidValue("id", favoriteResponse.id);
+    writer.writeGuidValue("recipeId", favoriteResponse.recipeId);
+    writer.writeAdditionalData(favoriteResponse.additionalData);
+}
+/**
+ * Serializes information the current object
  * @param HttpValidationProblemDetails The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -351,6 +1137,19 @@ export function serializeHttpValidationProblemDetails(writer: SerializationWrite
 export function serializeHttpValidationProblemDetails_errors(writer: SerializationWriter, httpValidationProblemDetails_errors: Partial<HttpValidationProblemDetails_errors> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!httpValidationProblemDetails_errors || isSerializingDerivedType) { return; }
     writer.writeAdditionalData(httpValidationProblemDetails_errors.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param ImageUploadResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeImageUploadResponse(writer: SerializationWriter, imageUploadResponse: Partial<ImageUploadResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!imageUploadResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("imagePath", imageUploadResponse.imagePath);
+    writer.writeGuidValue("recipeId", imageUploadResponse.recipeId);
+    writer.writeAdditionalData(imageUploadResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -390,6 +1189,217 @@ export function serializeIngredientResponse(writer: SerializationWriter, ingredi
     writer.writeGuidValue("id", ingredientResponse.id);
     writer.writeStringValue("name", ingredientResponse.name);
     writer.writeAdditionalData(ingredientResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param KeyValuePairOfstringAndStringValues The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeKeyValuePairOfstringAndStringValues(writer: SerializationWriter, keyValuePairOfstringAndStringValues: Partial<KeyValuePairOfstringAndStringValues> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!keyValuePairOfstringAndStringValues || isSerializingDerivedType) { return; }
+    writer.writeStringValue("key", keyValuePairOfstringAndStringValues.key);
+    writer.writeCollectionOfPrimitiveValues<string>("value", keyValuePairOfstringAndStringValues.value);
+    writer.writeAdditionalData(keyValuePairOfstringAndStringValues.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param PaginatedRecipesResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializePaginatedRecipesResponse(writer: SerializationWriter, paginatedRecipesResponse: Partial<PaginatedRecipesResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!paginatedRecipesResponse || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<RecipeSummaryResponse>("data", paginatedRecipesResponse.data, serializeRecipeSummaryResponse);
+    writer.writeBooleanValue("hasNextPage", paginatedRecipesResponse.hasNextPage);
+    writer.writeBooleanValue("hasPreviousPage", paginatedRecipesResponse.hasPreviousPage);
+    writer.writeObjectValue("page", paginatedRecipesResponse.page);
+    writer.writeObjectValue("pageSize", paginatedRecipesResponse.pageSize);
+    writer.writeObjectValue("totalCount", paginatedRecipesResponse.totalCount);
+    writer.writeObjectValue("totalPages", paginatedRecipesResponse.totalPages);
+    writer.writeAdditionalData(paginatedRecipesResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RateRecipeRequest The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRateRecipeRequest(writer: SerializationWriter, rateRecipeRequest: Partial<RateRecipeRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!rateRecipeRequest || isSerializingDerivedType) { return; }
+    writer.writeObjectValue("rating", rateRecipeRequest.rating);
+    writer.writeAdditionalData(rateRecipeRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RatingResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRatingResponse(writer: SerializationWriter, ratingResponse: Partial<RatingResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!ratingResponse || isSerializingDerivedType) { return; }
+    writer.writeDateValue("createdAt", ratingResponse.createdAt);
+    writer.writeGuidValue("id", ratingResponse.id);
+    writer.writeObjectValue("rating", ratingResponse.rating);
+    writer.writeGuidValue("recipeId", ratingResponse.recipeId);
+    writer.writeDateValue("updatedAt", ratingResponse.updatedAt);
+    writer.writeAdditionalData(ratingResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeCategoryResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeCategoryResponse(writer: SerializationWriter, recipeCategoryResponse: Partial<RecipeCategoryResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeCategoryResponse || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("id", recipeCategoryResponse.id);
+    writer.writeStringValue("name", recipeCategoryResponse.name);
+    writer.writeAdditionalData(recipeCategoryResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeDetailResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeDetailResponse(writer: SerializationWriter, recipeDetailResponse: Partial<RecipeDetailResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeDetailResponse || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<RecipeCategoryResponse>("categories", recipeDetailResponse.categories, serializeRecipeCategoryResponse);
+    writer.writeStringValue("coverPhotoPath", recipeDetailResponse.coverPhotoPath);
+    writer.writeDateValue("createdAt", recipeDetailResponse.createdAt);
+    writer.writeGuidValue("creatorId", recipeDetailResponse.creatorId);
+    writer.writeStringValue("description", recipeDetailResponse.description);
+    writer.writeStringValue("difficulty", recipeDetailResponse.difficulty);
+    writer.writeGuidValue("id", recipeDetailResponse.id);
+    writer.writeCollectionOfObjectValues<RecipeIngredientResponse>("ingredients", recipeDetailResponse.ingredients, serializeRecipeIngredientResponse);
+    writer.writeCollectionOfObjectValues<RecipeInstructionResponse>("instructions", recipeDetailResponse.instructions, serializeRecipeInstructionResponse);
+    writer.writeBooleanValue("isPublished", recipeDetailResponse.isPublished);
+    writer.writeStringValue("prepTime", recipeDetailResponse.prepTime);
+    writer.writeCollectionOfObjectValues<RecipeTagResponse>("tags", recipeDetailResponse.tags, serializeRecipeTagResponse);
+    writer.writeStringValue("title", recipeDetailResponse.title);
+    writer.writeDateValue("updatedAt", recipeDetailResponse.updatedAt);
+    writer.writeAdditionalData(recipeDetailResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeIngredientDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeIngredientDto(writer: SerializationWriter, recipeIngredientDto: Partial<RecipeIngredientDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeIngredientDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("ingredientName", recipeIngredientDto.ingredientName);
+    writer.writeObjectValue("quantity", recipeIngredientDto.quantity);
+    writer.writeStringValue("unit", recipeIngredientDto.unit);
+    writer.writeAdditionalData(recipeIngredientDto.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeIngredientResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeIngredientResponse(writer: SerializationWriter, recipeIngredientResponse: Partial<RecipeIngredientResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeIngredientResponse || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("id", recipeIngredientResponse.id);
+    writer.writeStringValue("ingredientName", recipeIngredientResponse.ingredientName);
+    writer.writeObjectValue("quantity", recipeIngredientResponse.quantity);
+    writer.writeStringValue("unit", recipeIngredientResponse.unit);
+    writer.writeAdditionalData(recipeIngredientResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeInstructionDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeInstructionDto(writer: SerializationWriter, recipeInstructionDto: Partial<RecipeInstructionDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeInstructionDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("description", recipeInstructionDto.description);
+    writer.writeObjectValue("stepNumber", recipeInstructionDto.stepNumber);
+    writer.writeAdditionalData(recipeInstructionDto.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeInstructionResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeInstructionResponse(writer: SerializationWriter, recipeInstructionResponse: Partial<RecipeInstructionResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeInstructionResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("description", recipeInstructionResponse.description);
+    writer.writeGuidValue("id", recipeInstructionResponse.id);
+    writer.writeObjectValue("stepNumber", recipeInstructionResponse.stepNumber);
+    writer.writeAdditionalData(recipeInstructionResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeResponse(writer: SerializationWriter, recipeResponse: Partial<RecipeResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeResponse || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<RecipeCategoryResponse>("categories", recipeResponse.categories, serializeRecipeCategoryResponse);
+    writer.writeStringValue("coverPhotoPath", recipeResponse.coverPhotoPath);
+    writer.writeDateValue("createdAt", recipeResponse.createdAt);
+    writer.writeGuidValue("creatorId", recipeResponse.creatorId);
+    writer.writeStringValue("description", recipeResponse.description);
+    writer.writeStringValue("difficulty", recipeResponse.difficulty);
+    writer.writeGuidValue("id", recipeResponse.id);
+    writer.writeCollectionOfObjectValues<RecipeIngredientResponse>("ingredients", recipeResponse.ingredients, serializeRecipeIngredientResponse);
+    writer.writeCollectionOfObjectValues<RecipeInstructionResponse>("instructions", recipeResponse.instructions, serializeRecipeInstructionResponse);
+    writer.writeBooleanValue("isPublished", recipeResponse.isPublished);
+    writer.writeStringValue("prepTime", recipeResponse.prepTime);
+    writer.writeCollectionOfObjectValues<RecipeTagResponse>("tags", recipeResponse.tags, serializeRecipeTagResponse);
+    writer.writeStringValue("title", recipeResponse.title);
+    writer.writeDateValue("updatedAt", recipeResponse.updatedAt);
+    writer.writeAdditionalData(recipeResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeSummaryResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeSummaryResponse(writer: SerializationWriter, recipeSummaryResponse: Partial<RecipeSummaryResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeSummaryResponse || isSerializingDerivedType) { return; }
+    writer.writeObjectValue("averageRating", recipeSummaryResponse.averageRating ?? 0);
+    writer.writeStringValue("coverPhotoPath", recipeSummaryResponse.coverPhotoPath);
+    writer.writeDateValue("createdAt", recipeSummaryResponse.createdAt);
+    writer.writeGuidValue("creatorId", recipeSummaryResponse.creatorId);
+    writer.writeStringValue("difficulty", recipeSummaryResponse.difficulty);
+    writer.writeGuidValue("id", recipeSummaryResponse.id);
+    writer.writeBooleanValue("isPublished", recipeSummaryResponse.isPublished);
+    writer.writeObjectValue("ratingCount", recipeSummaryResponse.ratingCount ?? 0);
+    writer.writeStringValue("title", recipeSummaryResponse.title);
+    writer.writeAdditionalData(recipeSummaryResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RecipeTagResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRecipeTagResponse(writer: SerializationWriter, recipeTagResponse: Partial<RecipeTagResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!recipeTagResponse || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("id", recipeTagResponse.id);
+    writer.writeStringValue("name", recipeTagResponse.name);
+    writer.writeAdditionalData(recipeTagResponse.additionalData);
 }
 /**
  * Serializes information the current object
