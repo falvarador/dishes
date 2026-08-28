@@ -1,10 +1,12 @@
 ﻿using dishes.Server.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace dishes.Server.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : DbContext(options)
+    : IdentityDbContext<IdentityUser>(options)
 {
     public DbSet<Dish> Dishes { get; set; } = null!;
     public DbSet<Ingredient> Ingredients { get; set; } = null!;

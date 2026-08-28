@@ -3,12 +3,16 @@ using dishes.Server.Features.Dishes;
 using dishes.Server.Features.Ingredients;
 using dishes.Server.Features.Recipes;
 using dishes.Server.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var corsPolicy = "CorsPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 
@@ -30,6 +34,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthorization();
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(
     builder.Configuration["ConnectionStrings:AppConnectionString"]));
 
@@ -51,36 +56,13 @@ if (app.Environment.IsDevelopment())
 app.UseCors(corsPolicy);
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
 var apiGroup = app.MapGroup("/api");
 
 apiGroup.MapDishesEndpoints();
 apiGroup.MapIngredientsEndpoints();
 apiGroup.MapRecipesEndpoints();
-
-apiGroup.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("Getc");
+apiGroup.MapIdentityApi<IdentityUser>();
 
 app.MapFallbackToFile("/index.html");
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
