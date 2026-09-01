@@ -380,6 +380,15 @@ export function createTwoFactorResponseFromDiscriminatorValue(parseNode: ParseNo
     return deserializeIntoTwoFactorResponse;
 }
 /**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {UpdateProfileRequest}
+ */
+// @ts-ignore
+export function createUpdateProfileRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoUpdateProfileRequest;
+}
+/**
  * The deserialization information for the current model
  * @param AccessTokenResponse The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
@@ -859,6 +868,21 @@ export function deserializeIntoTwoFactorResponse(twoFactorResponse: Partial<TwoF
         "recoveryCodes": n => { twoFactorResponse.recoveryCodes = n.getCollectionOfPrimitiveValues<string>("string"); },
         "recoveryCodesLeft": n => { twoFactorResponse.recoveryCodesLeft = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
         "sharedKey": n => { twoFactorResponse.sharedKey = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param UpdateProfileRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoUpdateProfileRequest(updateProfileRequest: Partial<UpdateProfileRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "biography": n => { updateProfileRequest.biography = n.getStringValue(); },
+        "culinaryTitle": n => { updateProfileRequest.culinaryTitle = n.getStringValue(); },
+        "fullName": n => { updateProfileRequest.fullName = n.getStringValue(); },
+        "location": n => { updateProfileRequest.location = n.getStringValue(); },
+        "profilePhotoUrl": n => { updateProfileRequest.profilePhotoUrl = n.getStringValue(); },
     }
 }
 export interface Dish extends AdditionalDataHolder, Parsable {
@@ -1872,6 +1896,22 @@ export function serializeTwoFactorResponse(writer: SerializationWriter, twoFacto
     writer.writeStringValue("sharedKey", twoFactorResponse.sharedKey);
     writer.writeAdditionalData(twoFactorResponse.additionalData);
 }
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param UpdateProfileRequest The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeUpdateProfileRequest(writer: SerializationWriter, updateProfileRequest: Partial<UpdateProfileRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!updateProfileRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("biography", updateProfileRequest.biography);
+    writer.writeStringValue("culinaryTitle", updateProfileRequest.culinaryTitle);
+    writer.writeStringValue("fullName", updateProfileRequest.fullName);
+    writer.writeStringValue("location", updateProfileRequest.location);
+    writer.writeStringValue("profilePhotoUrl", updateProfileRequest.profilePhotoUrl);
+    writer.writeAdditionalData(updateProfileRequest.additionalData);
+}
 export interface TwoFactorRequest extends AdditionalDataHolder, Parsable {
     /**
      * The enable property
@@ -1915,6 +1955,28 @@ export interface TwoFactorResponse extends AdditionalDataHolder, Parsable {
      * The sharedKey property
      */
     sharedKey?: string | null;
+}
+export interface UpdateProfileRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The biography property
+     */
+    biography?: string | null;
+    /**
+     * The culinaryTitle property
+     */
+    culinaryTitle?: string | null;
+    /**
+     * The fullName property
+     */
+    fullName?: string | null;
+    /**
+     * The location property
+     */
+    location?: string | null;
+    /**
+     * The profilePhotoUrl property
+     */
+    profilePhotoUrl?: string | null;
 }
 /* tslint:enable */
 /* eslint-enable */

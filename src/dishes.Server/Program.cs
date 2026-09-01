@@ -1,5 +1,9 @@
 using dishes.Server.Data;
+using dishes.Server.Data.Entities;
 using dishes.Server.Features.Dishes;
+using dishes.Server.Features.Identity;
+using dishes.Server.Features.Identity.GetProfile;
+using dishes.Server.Features.Identity.UpdateProfile;
 using dishes.Server.Features.Ingredients;
 using dishes.Server.Features.Recipes;
 using dishes.Server.Services;
@@ -11,7 +15,7 @@ var corsPolicy = "CorsPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+builder.Services.AddIdentityApiEndpoints<AppIdentityUser>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
@@ -21,6 +25,8 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 builder.Services.AddOpenApi();
 builder.Services.AddValidation();
 builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
+builder.Services.AddScoped<GetProfileHandler>();
+builder.Services.AddScoped<UpdateProfileHandler>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
@@ -56,12 +62,19 @@ if (app.Environment.IsDevelopment())
 app.UseCors(corsPolicy);
 app.UseHttpsRedirection();
 
+var userGroup = app.MapGroup("/api/user")
+            .RequireAuthorization()
+            .WithTags("Identity");
+
+userGroup.MapIdentityEndpoints();
+userGroup.MapIdentityApi<AppIdentityUser>();
+
 var apiGroup = app.MapGroup("/api");
 
 apiGroup.MapDishesEndpoints();
 apiGroup.MapIngredientsEndpoints();
 apiGroup.MapRecipesEndpoints();
-apiGroup.MapIdentityApi<IdentityUser>();
+
 
 app.MapFallbackToFile("/index.html");
 
