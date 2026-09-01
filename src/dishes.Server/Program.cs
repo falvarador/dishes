@@ -1,14 +1,22 @@
 using dishes.Server.Data;
+using dishes.Server.Data.Entities;
 using dishes.Server.Features.Dishes;
+using dishes.Server.Features.Identity;
+using dishes.Server.Features.Identity.GetProfile;
+using dishes.Server.Features.Identity.UpdateProfile;
 using dishes.Server.Features.Ingredients;
 using dishes.Server.Features.Recipes;
 using dishes.Server.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var corsPolicy = "CorsPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddIdentityApiEndpoints<AppIdentityUser>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 
@@ -17,6 +25,8 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 builder.Services.AddOpenApi();
 builder.Services.AddValidation();
 builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
+builder.Services.AddScoped<GetProfileHandler>();
+builder.Services.AddScoped<UpdateProfileHandler>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
@@ -30,6 +40,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthorization();
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(
     builder.Configuration["ConnectionStrings:AppConnectionString"]));
 
@@ -51,10 +62,12 @@ if (app.Environment.IsDevelopment())
 app.UseCors(corsPolicy);
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+var userGroup = app.MapGroup("/api/user")
+            .RequireAuthorization()
+            .WithTags("Identity");
+
+userGroup.MapIdentityEndpoints();
+userGroup.MapIdentityApi<AppIdentityUser>();
 
 var apiGroup = app.MapGroup("/api");
 
@@ -62,25 +75,7 @@ apiGroup.MapDishesEndpoints();
 apiGroup.MapIngredientsEndpoints();
 apiGroup.MapRecipesEndpoints();
 
-apiGroup.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("Getc");
 
 app.MapFallbackToFile("/index.html");
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

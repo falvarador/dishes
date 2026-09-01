@@ -8,7 +8,7 @@ import { IngredientsRequestBuilderNavigationMetadata, IngredientsRequestBuilderR
 // @ts-ignore
 import { RecipesRequestBuilderNavigationMetadata, RecipesRequestBuilderRequestsMetadata, type RecipesRequestBuilder } from './recipes/index.js';
 // @ts-ignore
-import { type WeatherforecastRequestBuilder, WeatherforecastRequestBuilderRequestsMetadata } from './weatherforecast/index.js';
+import { type UserRequestBuilder, UserRequestBuilderNavigationMetadata } from './user/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata } from '@microsoft/kiota-abstractions';
 
@@ -29,9 +29,9 @@ export interface ApiRequestBuilder extends BaseRequestBuilder<ApiRequestBuilder>
      */
     get recipes(): RecipesRequestBuilder;
     /**
-     * The weatherforecast property
+     * The user property
      */
-    get weatherforecast(): WeatherforecastRequestBuilder;
+    get user(): UserRequestBuilder;
 }
 /**
  * Uri template for the request builder.
@@ -53,8 +53,8 @@ export const ApiRequestBuilderNavigationMetadata: Record<Exclude<keyof ApiReques
         requestsMetadata: RecipesRequestBuilderRequestsMetadata,
         navigationMetadata: RecipesRequestBuilderNavigationMetadata,
     },
-    weatherforecast: {
-        requestsMetadata: WeatherforecastRequestBuilderRequestsMetadata,
+    user: {
+        navigationMetadata: UserRequestBuilderNavigationMetadata,
     },
 };
 /* tslint:enable */
