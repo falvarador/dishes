@@ -1,19 +1,38 @@
 using dishes.Server.Data;
 using dishes.Server.Data.Entities;
+using System.Security.Claims;
 
 namespace dishes.Server.Features.Recipes.CreateRecipe;
 
 public static class CreateRecipeHandler
 {
-    private static async Task<IResult> HandleAsync(CreateRecipeRequest request, AppDbContext context, CancellationToken cancellationToken)
+    private static async Task<IResult> HandleAsync(
+        CreateRecipeRequest request,
+        AppDbContext context,
+        HttpContext httpContext,
+        CancellationToken cancellationToken)
     {
+        // Extract authenticated user ID from claims
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        // Convert string userId to Guid for CreatorId
+        if (!Guid.TryParse(userId, out Guid creatorId))
+        {
+            return Results.BadRequest("Invalid user ID format");
+        }
+
         var recipe = new Recipe(
             Guid.NewGuid(),
             request.Title,
             request.Description,
             request.PrepTime,
             request.Difficulty,
-            Guid.NewGuid() // CreatorId - will be replaced with actual user ID when auth is implemented
+            creatorId
         )
         {
             CoverPhotoPath = request.CoverPhotoPath

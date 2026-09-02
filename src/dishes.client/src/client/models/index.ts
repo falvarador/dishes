@@ -22,6 +22,28 @@ export interface AccessTokenResponse extends AdditionalDataHolder, Parsable {
      */
     tokenType?: string | null;
 }
+export interface BadgeResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The awardedAt property
+     */
+    awardedAt?: Date | null;
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The iconUrl property
+     */
+    iconUrl?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+}
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
@@ -34,11 +56,29 @@ export function createAccessTokenResponseFromDiscriminatorValue(parseNode: Parse
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {BadgeResponse}
+ */
+// @ts-ignore
+export function createBadgeResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoBadgeResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {CreateRecipeRequest}
  */
 // @ts-ignore
 export function createCreateRecipeRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoCreateRecipeRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CreatorBadgeResponse}
+ */
+// @ts-ignore
+export function createCreatorBadgeResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCreatorBadgeResponse;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -388,6 +428,28 @@ export function createTwoFactorResponseFromDiscriminatorValue(parseNode: ParseNo
 export function createUpdateProfileRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoUpdateProfileRequest;
 }
+export interface CreatorBadgeResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The awardedAt property
+     */
+    awardedAt?: Date | null;
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The iconUrl property
+     */
+    iconUrl?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+}
 /**
  * The deserialization information for the current model
  * @param AccessTokenResponse The instance to deserialize into.
@@ -400,6 +462,21 @@ export function deserializeIntoAccessTokenResponse(accessTokenResponse: Partial<
         "expiresIn": n => { accessTokenResponse.expiresIn = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
         "refreshToken": n => { accessTokenResponse.refreshToken = n.getStringValue(); },
         "tokenType": n => { accessTokenResponse.tokenType = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param BadgeResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoBadgeResponse(badgeResponse: Partial<BadgeResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "awardedAt": n => { badgeResponse.awardedAt = n.getDateValue(); },
+        "description": n => { badgeResponse.description = n.getStringValue(); },
+        "iconUrl": n => { badgeResponse.iconUrl = n.getStringValue(); },
+        "id": n => { badgeResponse.id = n.getGuidValue(); },
+        "name": n => { badgeResponse.name = n.getStringValue(); },
     }
 }
 /**
@@ -420,6 +497,21 @@ export function deserializeIntoCreateRecipeRequest(createRecipeRequest: Partial<
         "prepTime": n => { createRecipeRequest.prepTime = n.getStringValue(); },
         "tagIds": n => { createRecipeRequest.tagIds = n.getCollectionOfPrimitiveValues<Guid>("string"); },
         "title": n => { createRecipeRequest.title = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CreatorBadgeResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCreatorBadgeResponse(creatorBadgeResponse: Partial<CreatorBadgeResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "awardedAt": n => { creatorBadgeResponse.awardedAt = n.getDateValue(); },
+        "description": n => { creatorBadgeResponse.description = n.getStringValue(); },
+        "iconUrl": n => { creatorBadgeResponse.iconUrl = n.getStringValue(); },
+        "id": n => { creatorBadgeResponse.id = n.getGuidValue(); },
+        "name": n => { creatorBadgeResponse.name = n.getStringValue(); },
     }
 }
 /**
@@ -749,6 +841,7 @@ export function deserializeIntoRecipeResponse(recipeResponse: Partial<RecipeResp
         "categories": n => { recipeResponse.categories = n.getCollectionOfObjectValues<RecipeCategoryResponse>(createRecipeCategoryResponseFromDiscriminatorValue); },
         "coverPhotoPath": n => { recipeResponse.coverPhotoPath = n.getStringValue(); },
         "createdAt": n => { recipeResponse.createdAt = n.getDateValue(); },
+        "creatorBadges": n => { recipeResponse.creatorBadges = n.getCollectionOfObjectValues<CreatorBadgeResponse>(createCreatorBadgeResponseFromDiscriminatorValue); },
         "creatorId": n => { recipeResponse.creatorId = n.getGuidValue(); },
         "description": n => { recipeResponse.description = n.getStringValue(); },
         "difficulty": n => { recipeResponse.difficulty = n.getStringValue(); },
@@ -1251,6 +1344,10 @@ export interface RecipeResponse extends AdditionalDataHolder, Parsable {
      */
     createdAt?: Date | null;
     /**
+     * The creatorBadges property
+     */
+    creatorBadges?: CreatorBadgeResponse[] | null;
+    /**
      * The creatorId property
      */
     creatorId?: Guid | null;
@@ -1396,6 +1493,22 @@ export function serializeAccessTokenResponse(writer: SerializationWriter, access
 }
 /**
  * Serializes information the current object
+ * @param BadgeResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeBadgeResponse(writer: SerializationWriter, badgeResponse: Partial<BadgeResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!badgeResponse || isSerializingDerivedType) { return; }
+    writer.writeDateValue("awardedAt", badgeResponse.awardedAt);
+    writer.writeStringValue("description", badgeResponse.description);
+    writer.writeStringValue("iconUrl", badgeResponse.iconUrl);
+    writer.writeGuidValue("id", badgeResponse.id);
+    writer.writeStringValue("name", badgeResponse.name);
+    writer.writeAdditionalData(badgeResponse.additionalData);
+}
+/**
+ * Serializes information the current object
  * @param CreateRecipeRequest The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -1414,6 +1527,22 @@ export function serializeCreateRecipeRequest(writer: SerializationWriter, create
     writer.writeCollectionOfPrimitiveValues<Guid>("tagIds", createRecipeRequest.tagIds);
     writer.writeStringValue("title", createRecipeRequest.title);
     writer.writeAdditionalData(createRecipeRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CreatorBadgeResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCreatorBadgeResponse(writer: SerializationWriter, creatorBadgeResponse: Partial<CreatorBadgeResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!creatorBadgeResponse || isSerializingDerivedType) { return; }
+    writer.writeDateValue("awardedAt", creatorBadgeResponse.awardedAt);
+    writer.writeStringValue("description", creatorBadgeResponse.description);
+    writer.writeStringValue("iconUrl", creatorBadgeResponse.iconUrl);
+    writer.writeGuidValue("id", creatorBadgeResponse.id);
+    writer.writeStringValue("name", creatorBadgeResponse.name);
+    writer.writeAdditionalData(creatorBadgeResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -1767,6 +1896,7 @@ export function serializeRecipeResponse(writer: SerializationWriter, recipeRespo
     writer.writeCollectionOfObjectValues<RecipeCategoryResponse>("categories", recipeResponse.categories, serializeRecipeCategoryResponse);
     writer.writeStringValue("coverPhotoPath", recipeResponse.coverPhotoPath);
     writer.writeDateValue("createdAt", recipeResponse.createdAt);
+    writer.writeCollectionOfObjectValues<CreatorBadgeResponse>("creatorBadges", recipeResponse.creatorBadges, serializeCreatorBadgeResponse);
     writer.writeGuidValue("creatorId", recipeResponse.creatorId);
     writer.writeStringValue("description", recipeResponse.description);
     writer.writeStringValue("difficulty", recipeResponse.difficulty);
