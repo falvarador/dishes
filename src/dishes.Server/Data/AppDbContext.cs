@@ -16,6 +16,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<RecipeTag> RecipeTags { get; set; } = null!;
     public DbSet<UserRecipeRating> UserRecipeRatings { get; set; } = null!;
     public DbSet<UserRecipeFavorite> UserRecipeFavorites { get; set; } = null!;
+    public DbSet<Badge> Badges { get; set; } = null!;
+    public DbSet<UserBadge> UserBadges { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -237,6 +239,25 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         _ = modelBuilder
             .Entity<UserRecipeFavorite>()
             .HasIndex(f => new { f.UserId, f.RecipeId })
+            .IsUnique();
+
+        // Configure Badge relationships
+        _ = modelBuilder.Entity<UserBadge>()
+            .HasOne(ub => ub.User)
+            .WithMany()
+            .HasForeignKey(ub => ub.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        _ = modelBuilder.Entity<UserBadge>()
+            .HasOne(ub => ub.Badge)
+            .WithMany(b => b.UserBadges)
+            .HasForeignKey(ub => ub.BadgeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Add unique constraint for user badges (user cannot have same badge twice)
+        _ = modelBuilder
+            .Entity<UserBadge>()
+            .HasIndex(ub => new { ub.UserId, ub.BadgeId })
             .IsUnique();
 
         base.OnModelCreating(modelBuilder);

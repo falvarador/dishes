@@ -1,6 +1,7 @@
 using dishes.Server.Data;
 using dishes.Server.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace dishes.Server.Features.Recipes.UpdateRecipe;
 
@@ -10,8 +11,23 @@ public static class UpdateRecipeHandler
         Guid id,
         CreateRecipeRequest request,
         AppDbContext context,
+        HttpContext httpContext,
         CancellationToken cancellationToken)
     {
+        // Extract authenticated user ID from claims
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        // Convert string userId to Guid for comparison
+        if (!Guid.TryParse(userId, out Guid userIdGuid))
+        {
+            return Results.BadRequest("Invalid user ID format");
+        }
+
         var recipe = await context.Recipes
             .Include(r => r.Ingredients)
             .Include(r => r.Instructions)
@@ -20,6 +36,12 @@ public static class UpdateRecipeHandler
         if (recipe is null)
         {
             return Results.NotFound();
+        }
+
+        // Verify that the user is the creator of the recipe
+        if (recipe.CreatorId != userIdGuid)
+        {
+            return Results.Forbid();
         }
 
         // Update basic properties
@@ -122,7 +144,7 @@ public static class UpdateRecipeHandler
             instructions,
             categories,
             tags,
-            false // IsPublished - will be added when publication logic is implemented
+            recipe.Status == RecipeStatus.Published
         );
     }
 

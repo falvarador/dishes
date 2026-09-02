@@ -14,7 +14,8 @@ public record RecipeResponse(
     ICollection<RecipeInstructionResponse> Instructions,
     ICollection<RecipeCategoryResponse> Categories,
     ICollection<RecipeTagResponse> Tags,
-    bool IsPublished
+    bool IsPublished,
+    ICollection<CreatorBadgeResponse>? CreatorBadges = null
 );
 
 public record RecipeIngredientResponse(
@@ -55,4 +56,12 @@ public record RecipeDetailResponse(
     ICollection<RecipeCategoryResponse> Categories,
     ICollection<RecipeTagResponse> Tags,
     bool IsPublished
+);
+
+public record CreatorBadgeResponse(
+    Guid Id,
+    string Name,
+    string Description,
+    string IconUrl,
+    DateTime AwardedAt
 );

@@ -39,6 +39,33 @@
         }
       }
     },
+    "/api/user/badges": {
+      "get": {
+        "tags": [
+          "Identity"
+        ],
+        "description": "Get the badges of the currently authenticated user.",
+        "operationId": "GetBadges",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BadgeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/user/register": {
       "post": {
         "tags": [
@@ -1321,6 +1348,28 @@
           }
         }
       },
+      "BadgeResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "iconUrl": {
+            "type": "string"
+          },
+          "awardedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "CreateRecipeRequest": {
         "required": [
           "title",
@@ -1385,6 +1434,35 @@
           "isPublished": {
             "type": "boolean",
             "default": false
+          }
+        }
+      },
+      "CreatorBadgeResponse": {
+        "required": [
+          "id",
+          "name",
+          "description",
+          "iconUrl",
+          "awardedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "iconUrl": {
+            "type": "string"
+          },
+          "awardedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -2052,6 +2130,15 @@
           },
           "isPublished": {
             "type": "boolean"
+          },
+          "creatorBadges": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/CreatorBadgeResponse"
+            }
           }
         }
       },

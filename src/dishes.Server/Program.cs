@@ -7,7 +7,6 @@ using dishes.Server.Features.Identity.UpdateProfile;
 using dishes.Server.Features.Ingredients;
 using dishes.Server.Features.Recipes;
 using dishes.Server.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
