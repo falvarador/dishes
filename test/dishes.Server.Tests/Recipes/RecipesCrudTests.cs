@@ -1,8 +1,10 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using dishes.Server.Data;
 using dishes.Server.Data.Entities;
 using dishes.Server.Features.Recipes;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,7 +35,8 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
 
     private async Task<Recipe> SeedRecipeAsync(
         string title = "Seed Recipe",
-        string description = "A test recipe")
+        string description = "A test recipe",
+        Guid? creatorId = null)
     {
         using var scope = _factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -43,7 +46,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
             description,
             "30 mins",
             "Easy",
-            Guid.NewGuid()
+            creatorId ?? Guid.NewGuid()
         );
         context.Recipes.Add(recipe);
         await context.SaveChangesAsync();
@@ -68,6 +71,50 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
         context.RecipeTags.Add(tag);
         await context.SaveChangesAsync();
         return tag;
+    }
+
+    private async Task<(Guid UserId, string Token)> CreateAndAuthenticateUserAsync(string? username = null)
+    {
+        username ??= $"cruduser_{Guid.NewGuid():N}";
+        using var scope = _factory.Services.CreateScope();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppIdentityUser>>();
+        var email = $"{username}@test.com";
+
+        var user = new AppIdentityUser(email)
+        {
+            Email = email,
+            EmailConfirmed = true
+        };
+
+        var createResult = await userManager.CreateAsync(user, "Password123!");
+        if (!createResult.Succeeded)
+            throw new InvalidOperationException($"Could not create user: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
+
+        if (!user.EmailConfirmed)
+        {
+            var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            await userManager.ConfirmEmailAsync(user, confirmationToken);
+        }
+
+        var loginResponse = await _client.PostAsJsonAsync("/api/user/login", new
+        {
+            email = $"{username}@test.com",
+            password = "Password123!"
+        });
+
+        if (!loginResponse.IsSuccessStatusCode)
+        {
+            var errorBody = await loginResponse.Content.ReadAsStringAsync();
+            throw new InvalidOperationException($"Login failed ({(int)loginResponse.StatusCode} {loginResponse.StatusCode}): {errorBody}");
+        }
+        var loginContent = await loginResponse.Content.ReadAsStringAsync();
+        using var doc = System.Text.Json.JsonDocument.Parse(loginContent);
+        var token = doc.RootElement.GetProperty("accessToken").GetString()
+            ?? throw new InvalidOperationException("Access token is null");
+
+        var userIdGuid = Guid.TryParse(user.Id, out var guid) ? guid : Guid.NewGuid();
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        return (userIdGuid, token);
     }
 
     [Fact]
@@ -149,6 +196,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     public async Task CreateRecipe_ReturnsCreated_WhenDataIsValid()
     {
         await ClearRecipesAsync();
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: "Spaghetti Bolognese",
             Description: "A classic Italian sauce",
@@ -183,6 +231,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateRecipe_ReturnsBadRequest_WhenTitleIsMissing()
     {
+        await CreateAndAuthenticateUserAsync();
         var request = new { description = "Test", prepTime = "30m", difficulty = "Easy", ingredients = new List<object>(), instructions = new List<object>() };
 
         var response = await _client.PostAsJsonAsync("/api/recipes", request);
@@ -193,6 +242,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateRecipe_ReturnsBadRequest_WhenDescriptionIsMissing()
     {
+        await CreateAndAuthenticateUserAsync();
         var request = new { title = "Test", prepTime = "30m", difficulty = "Easy", ingredients = new List<object>(), instructions = new List<object>() };
 
         var response = await _client.PostAsJsonAsync("/api/recipes", request);
@@ -203,6 +253,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateRecipe_ReturnsBadRequest_WhenPrepTimeIsMissing()
     {
+        await CreateAndAuthenticateUserAsync();
         var request = new { title = "Test", description = "Test", difficulty = "Easy", ingredients = new List<object>(), instructions = new List<object>() };
 
         var response = await _client.PostAsJsonAsync("/api/recipes", request);
@@ -213,6 +264,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateRecipe_ReturnsBadRequest_WhenDifficultyIsMissing()
     {
+        await CreateAndAuthenticateUserAsync();
         var request = new { title = "Test", description = "Test", prepTime = "30m", ingredients = new List<object>(), instructions = new List<object>() };
 
         var response = await _client.PostAsJsonAsync("/api/recipes", request);
@@ -225,6 +277,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     {
         // Note: Empty collections are allowed to be sent, but they require at least one item for data integrity
         // This is validated at business logic level, not at DTO level
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: "Test",
             Description: "Test",
@@ -248,6 +301,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     {
         // Note: Empty collections are allowed to be sent, but they require at least one item for data integrity
         // This is validated at business logic level, not at DTO level
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: "Test",
             Description: "Test",
@@ -269,6 +323,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateRecipe_ReturnsBadRequest_WhenTitleExceedsMaxLength()
     {
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: new string('a', 501),
             Description: "Test",
@@ -290,6 +345,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     public async Task CreateRecipe_IncludesIngredientsAndInstructions()
     {
         await ClearRecipesAsync();
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: "Test Recipe",
             Description: "Test description",
@@ -325,6 +381,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     public async Task CreateRecipe_AllowsOptionalCoverPhotoPath()
     {
         await ClearRecipesAsync();
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: "Test Recipe",
             Description: "Test description",
@@ -348,6 +405,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateRecipe_AllowsEmptyCategories()
     {
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: "Test Recipe",
             Description: "Test description",
@@ -368,6 +426,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateRecipe_AllowsEmptyTags()
     {
+        await CreateAndAuthenticateUserAsync();
         var request = new CreateRecipeRequest(
             Title: "Test Recipe",
             Description: "Test description",
@@ -389,7 +448,8 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     public async Task UpdateRecipe_ReturnsOk_WhenRecipeExistsAndDataIsValid()
     {
         await ClearRecipesAsync();
-        var recipe = await SeedRecipeAsync("Original Title", "Original description");
+        var (userId, _) = await CreateAndAuthenticateUserAsync();
+        var recipe = await SeedRecipeAsync("Original Title", "Original description", userId);
 
         var updateRequest = new CreateRecipeRequest(
             Title: "Updated Title",
@@ -419,7 +479,8 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     public async Task UpdateRecipe_UpdatesIngredientsAndInstructions()
     {
         await ClearRecipesAsync();
-        var recipe = await SeedRecipeAsync("Test Recipe", "Original");
+        var (userId, _) = await CreateAndAuthenticateUserAsync();
+        var recipe = await SeedRecipeAsync("Test Recipe", "Original", userId);
 
         var updateRequest = new CreateRecipeRequest(
             Title: "Test Recipe",
@@ -455,6 +516,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task UpdateRecipe_ReturnsNotFound_WhenRecipeDoesNotExist()
     {
+        await CreateAndAuthenticateUserAsync();
         var updateRequest = new CreateRecipeRequest(
             Title: "Test",
             Description: "Test",
@@ -475,7 +537,8 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task UpdateRecipe_ReturnsBadRequest_WhenDataIsInvalid()
     {
-        var recipe = await SeedRecipeAsync("Test", "Test");
+        var (userId, _) = await CreateAndAuthenticateUserAsync();
+        var recipe = await SeedRecipeAsync("Test", "Test", userId);
 
         var response = await _client.PutAsJsonAsync($"/api/recipes/{recipe.Id}", new { title = "" });
 

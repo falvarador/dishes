@@ -1,12 +1,16 @@
 using dishes.Server.Data;
 using dishes.Server.Data.Entities;
+using dishes.Server.Features.Account;
+using dishes.Server.Features.Account.AccountSettings;
 using dishes.Server.Features.Dishes;
 using dishes.Server.Features.Identity;
 using dishes.Server.Features.Identity.GetProfile;
+using dishes.Server.Features.Identity.GetUserBadges;
 using dishes.Server.Features.Identity.UpdateProfile;
 using dishes.Server.Features.Ingredients;
 using dishes.Server.Features.Recipes;
 using dishes.Server.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -17,6 +21,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddIdentityApiEndpoints<AppIdentityUser>()
     .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedAccount = false;
+});
+
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 
 // Add services to the container.
@@ -26,6 +36,9 @@ builder.Services.AddValidation();
 builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
 builder.Services.AddScoped<GetProfileHandler>();
 builder.Services.AddScoped<UpdateProfileHandler>();
+builder.Services.AddScoped<GetUserBadgesHandler>();
+builder.Services.AddScoped<GetAccountSettingsHandler>();
+builder.Services.AddScoped<UpdateAccountSettingsHandler>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
@@ -61,12 +74,23 @@ if (app.Environment.IsDevelopment())
 app.UseCors(corsPolicy);
 app.UseHttpsRedirection();
 
+var identityApiGroup = app.MapGroup("/api/user")
+            .WithTags("Identity")
+            .AllowAnonymous();
+
+identityApiGroup.MapIdentityApi<AppIdentityUser>();
+
 var userGroup = app.MapGroup("/api/user")
             .RequireAuthorization()
             .WithTags("Identity");
 
 userGroup.MapIdentityEndpoints();
-userGroup.MapIdentityApi<AppIdentityUser>();
+
+var accountGroup = app.MapGroup("/api/account")
+            .RequireAuthorization()
+            .WithTags("Account");
+
+accountGroup.MapAccountSettingsEndpoints();
 
 var apiGroup = app.MapGroup("/api");
 

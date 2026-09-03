@@ -12,6 +12,7 @@ public class UpdateRecipeWithOwnershipIntegrationTests : IAsyncLifetime
 {
     private readonly CustomWebApplicationFactory _factory;
     private HttpClient _client = null!;
+    private IServiceScope _scope = null!;
     private AppDbContext _context = null!;
     private UserManager<AppIdentityUser> _userManager = null!;
 
@@ -23,10 +24,9 @@ public class UpdateRecipeWithOwnershipIntegrationTests : IAsyncLifetime
     public async Task InitializeAsync()
     {
         _client = _factory.CreateClient();
-
-        using var scope = _factory.Services.CreateScope();
-        _context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        _userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppIdentityUser>>();
+        _scope = _factory.Services.CreateScope();
+        _context = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        _userManager = _scope.ServiceProvider.GetRequiredService<UserManager<AppIdentityUser>>();
 
         await CleanupAsync();
     }
@@ -34,6 +34,7 @@ public class UpdateRecipeWithOwnershipIntegrationTests : IAsyncLifetime
     public async Task DisposeAsync()
     {
         await CleanupAsync();
+        _scope.Dispose();
         _factory.Dispose();
     }
 
@@ -101,7 +102,7 @@ public class UpdateRecipeWithOwnershipIntegrationTests : IAsyncLifetime
         var updated = await response.Content.ReadFromJsonAsync<RecipeResponse>();
         Assert.NotNull(updated);
         Assert.Equal("Updated Title", updated.Title);
-        Assert.Equal("Updated Desc", updated.Description);
+        Assert.Equal("Updated Description", updated.Description);
     }
 
     [Fact]
@@ -280,22 +281,24 @@ public class UpdateRecipeWithOwnershipIntegrationTests : IAsyncLifetime
 
     private async Task<(Guid UserId, string Token)> CreateAndAuthenticateUserAsync(string username)
     {
-        var user = new AppIdentityUser(username)
+        var email = $"{username}@test.com";
+        var user = new AppIdentityUser(email)
         {
-            Email = $"{username}@test.com"
+            Email = email,
+            EmailConfirmed = true
         };
 
         var createResult = await _userManager.CreateAsync(user, "Password123!");
         if (!createResult.Succeeded)
             throw new InvalidOperationException($"Could not create user: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
 
-        await _client.PostAsJsonAsync("/register", new
+        if (!user.EmailConfirmed)
         {
-            email = $"{username}@test.com",
-            password = "Password123!"
-        });
+            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            await _userManager.ConfirmEmailAsync(user, confirmationToken);
+        }
 
-        var loginResponse = await _client.PostAsJsonAsync("/login", new
+        var loginResponse = await _client.PostAsJsonAsync("/api/user/login", new
         {
             email = $"{username}@test.com",
             password = "Password123!"
