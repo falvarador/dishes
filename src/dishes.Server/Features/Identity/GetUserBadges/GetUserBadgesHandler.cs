@@ -21,7 +21,7 @@ public class GetUserBadgesHandler
             })
             .ToListAsync(cancellationToken);
 
-        return Results.Ok(new { badges = userBadges, count = userBadges.Count });
+        return Results.Ok(userBadges);
     }
 }
 

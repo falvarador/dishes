@@ -22,6 +22,44 @@ export interface AccessTokenResponse extends AdditionalDataHolder, Parsable {
      */
     tokenType?: string | null;
 }
+export interface AccountSettingsResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The biography property
+     */
+    biography?: string | null;
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The culinaryTitle property
+     */
+    culinaryTitle?: string | null;
+    /**
+     * The email property
+     */
+    email?: string | null;
+    /**
+     * The fullName property
+     */
+    fullName?: string | null;
+    /**
+     * The id property
+     */
+    id?: string | null;
+    /**
+     * The location property
+     */
+    location?: string | null;
+    /**
+     * The profilePhotoUrl property
+     */
+    profilePhotoUrl?: string | null;
+    /**
+     * The userName property
+     */
+    userName?: string | null;
+}
 export interface BadgeResponse extends AdditionalDataHolder, Parsable {
     /**
      * The awardedAt property
@@ -52,6 +90,15 @@ export interface BadgeResponse extends AdditionalDataHolder, Parsable {
 // @ts-ignore
 export function createAccessTokenResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoAccessTokenResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AccountSettingsResponse}
+ */
+// @ts-ignore
+export function createAccountSettingsResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAccountSettingsResponse;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -422,6 +469,15 @@ export function createTwoFactorResponseFromDiscriminatorValue(parseNode: ParseNo
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {UpdateAccountSettingsRequest}
+ */
+// @ts-ignore
+export function createUpdateAccountSettingsRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoUpdateAccountSettingsRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {UpdateProfileRequest}
  */
 // @ts-ignore
@@ -462,6 +518,25 @@ export function deserializeIntoAccessTokenResponse(accessTokenResponse: Partial<
         "expiresIn": n => { accessTokenResponse.expiresIn = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
         "refreshToken": n => { accessTokenResponse.refreshToken = n.getStringValue(); },
         "tokenType": n => { accessTokenResponse.tokenType = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AccountSettingsResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAccountSettingsResponse(accountSettingsResponse: Partial<AccountSettingsResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "biography": n => { accountSettingsResponse.biography = n.getStringValue(); },
+        "createdAt": n => { accountSettingsResponse.createdAt = n.getDateValue(); },
+        "culinaryTitle": n => { accountSettingsResponse.culinaryTitle = n.getStringValue(); },
+        "email": n => { accountSettingsResponse.email = n.getStringValue(); },
+        "fullName": n => { accountSettingsResponse.fullName = n.getStringValue(); },
+        "id": n => { accountSettingsResponse.id = n.getStringValue(); },
+        "location": n => { accountSettingsResponse.location = n.getStringValue(); },
+        "profilePhotoUrl": n => { accountSettingsResponse.profilePhotoUrl = n.getStringValue(); },
+        "userName": n => { accountSettingsResponse.userName = n.getStringValue(); },
     }
 }
 /**
@@ -961,6 +1036,21 @@ export function deserializeIntoTwoFactorResponse(twoFactorResponse: Partial<TwoF
         "recoveryCodes": n => { twoFactorResponse.recoveryCodes = n.getCollectionOfPrimitiveValues<string>("string"); },
         "recoveryCodesLeft": n => { twoFactorResponse.recoveryCodesLeft = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
         "sharedKey": n => { twoFactorResponse.sharedKey = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param UpdateAccountSettingsRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoUpdateAccountSettingsRequest(updateAccountSettingsRequest: Partial<UpdateAccountSettingsRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "biography": n => { updateAccountSettingsRequest.biography = n.getStringValue(); },
+        "culinaryTitle": n => { updateAccountSettingsRequest.culinaryTitle = n.getStringValue(); },
+        "fullName": n => { updateAccountSettingsRequest.fullName = n.getStringValue(); },
+        "location": n => { updateAccountSettingsRequest.location = n.getStringValue(); },
+        "profilePhotoUrl": n => { updateAccountSettingsRequest.profilePhotoUrl = n.getStringValue(); },
     }
 }
 /**
@@ -1490,6 +1580,26 @@ export function serializeAccessTokenResponse(writer: SerializationWriter, access
     writer.writeStringValue("refreshToken", accessTokenResponse.refreshToken);
     writer.writeStringValue("tokenType", accessTokenResponse.tokenType);
     writer.writeAdditionalData(accessTokenResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param AccountSettingsResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAccountSettingsResponse(writer: SerializationWriter, accountSettingsResponse: Partial<AccountSettingsResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!accountSettingsResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("biography", accountSettingsResponse.biography);
+    writer.writeDateValue("createdAt", accountSettingsResponse.createdAt);
+    writer.writeStringValue("culinaryTitle", accountSettingsResponse.culinaryTitle);
+    writer.writeStringValue("email", accountSettingsResponse.email);
+    writer.writeStringValue("fullName", accountSettingsResponse.fullName);
+    writer.writeStringValue("id", accountSettingsResponse.id);
+    writer.writeStringValue("location", accountSettingsResponse.location);
+    writer.writeStringValue("profilePhotoUrl", accountSettingsResponse.profilePhotoUrl);
+    writer.writeStringValue("userName", accountSettingsResponse.userName);
+    writer.writeAdditionalData(accountSettingsResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -2029,6 +2139,22 @@ export function serializeTwoFactorResponse(writer: SerializationWriter, twoFacto
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param UpdateAccountSettingsRequest The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeUpdateAccountSettingsRequest(writer: SerializationWriter, updateAccountSettingsRequest: Partial<UpdateAccountSettingsRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!updateAccountSettingsRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("biography", updateAccountSettingsRequest.biography);
+    writer.writeStringValue("culinaryTitle", updateAccountSettingsRequest.culinaryTitle);
+    writer.writeStringValue("fullName", updateAccountSettingsRequest.fullName);
+    writer.writeStringValue("location", updateAccountSettingsRequest.location);
+    writer.writeStringValue("profilePhotoUrl", updateAccountSettingsRequest.profilePhotoUrl);
+    writer.writeAdditionalData(updateAccountSettingsRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param UpdateProfileRequest The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
@@ -2085,6 +2211,28 @@ export interface TwoFactorResponse extends AdditionalDataHolder, Parsable {
      * The sharedKey property
      */
     sharedKey?: string | null;
+}
+export interface UpdateAccountSettingsRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The biography property
+     */
+    biography?: string | null;
+    /**
+     * The culinaryTitle property
+     */
+    culinaryTitle?: string | null;
+    /**
+     * The fullName property
+     */
+    fullName?: string | null;
+    /**
+     * The location property
+     */
+    location?: string | null;
+    /**
+     * The profilePhotoUrl property
+     */
+    profilePhotoUrl?: string | null;
 }
 export interface UpdateProfileRequest extends AdditionalDataHolder, Parsable {
     /**
