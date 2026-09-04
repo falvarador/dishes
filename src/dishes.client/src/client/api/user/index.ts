@@ -6,6 +6,8 @@ import { BadgesRequestBuilderRequestsMetadata, type BadgesRequestBuilder } from 
 // @ts-ignore
 import { ConfirmEmailRequestBuilderRequestsMetadata, type ConfirmEmailRequestBuilder } from './confirmEmail/index.js';
 // @ts-ignore
+import { FollowsRequestBuilderNavigationMetadata, type FollowsRequestBuilder } from './follows/index.js';
+// @ts-ignore
 import { ForgotPasswordRequestBuilderRequestsMetadata, type ForgotPasswordRequestBuilder } from './forgotPassword/index.js';
 // @ts-ignore
 import { LoginRequestBuilderRequestsMetadata, type LoginRequestBuilder } from './login/index.js';
@@ -22,6 +24,8 @@ import { ResendConfirmationEmailRequestBuilderRequestsMetadata, type ResendConfi
 // @ts-ignore
 import { ResetPasswordRequestBuilderRequestsMetadata, type ResetPasswordRequestBuilder } from './resetPassword/index.js';
 // @ts-ignore
+import { StatisticsRequestBuilderRequestsMetadata, type StatisticsRequestBuilder } from './statistics/index.js';
+// @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata } from '@microsoft/kiota-abstractions';
 
 /**
@@ -36,6 +40,10 @@ export interface UserRequestBuilder extends BaseRequestBuilder<UserRequestBuilde
      * The confirmEmail property
      */
     get confirmEmail(): ConfirmEmailRequestBuilder;
+    /**
+     * The follows property
+     */
+    get follows(): FollowsRequestBuilder;
     /**
      * The forgotPassword property
      */
@@ -68,6 +76,10 @@ export interface UserRequestBuilder extends BaseRequestBuilder<UserRequestBuilde
      * The resetPassword property
      */
     get resetPassword(): ResetPasswordRequestBuilder;
+    /**
+     * The statistics property
+     */
+    get statistics(): StatisticsRequestBuilder;
 }
 /**
  * Uri template for the request builder.
@@ -82,6 +94,9 @@ export const UserRequestBuilderNavigationMetadata: Record<Exclude<keyof UserRequ
     },
     confirmEmail: {
         requestsMetadata: ConfirmEmailRequestBuilderRequestsMetadata,
+    },
+    follows: {
+        navigationMetadata: FollowsRequestBuilderNavigationMetadata,
     },
     forgotPassword: {
         requestsMetadata: ForgotPasswordRequestBuilderRequestsMetadata,
@@ -106,6 +121,9 @@ export const UserRequestBuilderNavigationMetadata: Record<Exclude<keyof UserRequ
     },
     resetPassword: {
         requestsMetadata: ResetPasswordRequestBuilderRequestsMetadata,
+    },
+    statistics: {
+        requestsMetadata: StatisticsRequestBuilderRequestsMetadata,
     },
 };
 /* tslint:enable */

@@ -1,7 +1,12 @@
+using dishes.Server.Data;
+using dishes.Server.Features.Identity.FollowUser;
 using dishes.Server.Features.Identity.GetProfile;
 using dishes.Server.Features.Identity.GetUserBadges;
+using dishes.Server.Features.Identity.GetUserStatistics;
+using dishes.Server.Features.Identity.UnfollowUser;
 using dishes.Server.Features.Identity.UpdateProfile;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace dishes.Server.Features.Identity;
 
@@ -20,6 +25,28 @@ public static class IdentityEndpoints
             .WithDescription("Get the badges of the currently authenticated user.")
             .Produces<List<BadgeResponse>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized);
+
+        routes.MapGet("/statistics", GetStatistics)
+            .WithName("GetUserStatistics")
+            .WithDescription("Get the currently authenticated user's creator statistics.")
+            .Produces<UserStatisticsResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized);
+
+        routes.MapPost("/follows/{userId}", FollowUser)
+            .WithName("FollowUser")
+            .WithDescription("Follow another creator.")
+            .Produces<FollowUserResponse>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status409Conflict);
+
+        routes.MapDelete("/follows/{userId}", UnfollowUser)
+            .WithName("UnfollowUser")
+            .WithDescription("Unfollow a creator.")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status404NotFound);
 
         return routes;
     }
@@ -43,12 +70,56 @@ public static class IdentityEndpoints
         [FromServices] GetUserBadgesHandler handler,
         HttpContext httpContext)
     {
-        var userId = httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))
         {
             return Results.Unauthorized();
         }
 
-        return await handler.HandleAsync(userId, httpContext.RequestServices.GetRequiredService<Data.AppDbContext>(), httpContext.RequestAborted);
+        return await handler.HandleAsync(userId, httpContext.RequestServices.GetRequiredService<AppDbContext>(), httpContext.RequestAborted);
+    }
+
+    private static async Task<IResult> GetStatistics(
+        [FromServices] GetUserStatisticsHandler handler,
+        HttpContext httpContext,
+        AppDbContext context)
+    {
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        return await handler.HandleAsync(userId, context, httpContext.RequestAborted);
+    }
+
+    private static async Task<IResult> FollowUser(
+        [FromServices] FollowUserHandler handler,
+        string userId,
+        HttpContext httpContext,
+        AppDbContext context)
+    {
+        var followerUserId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(followerUserId))
+        {
+            return Results.Unauthorized();
+        }
+
+        return await handler.HandleAsync(followerUserId, userId, context, httpContext.RequestAborted);
+    }
+
+    private static async Task<IResult> UnfollowUser(
+        [FromServices] UnfollowUserHandler handler,
+        string userId,
+        HttpContext httpContext,
+        AppDbContext context)
+    {
+        var followerUserId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(followerUserId))
+        {
+            return Results.Unauthorized();
+        }
+
+        return await handler.HandleAsync(followerUserId, userId, context, httpContext.RequestAborted);
     }
 }

@@ -166,6 +166,15 @@ export function createFavoriteResponseFromDiscriminatorValue(parseNode: ParseNod
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {FollowUserResponse}
+ */
+// @ts-ignore
+export function createFollowUserResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoFollowUserResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {ForgotPasswordRequest}
  */
 // @ts-ignore
@@ -484,6 +493,15 @@ export function createUpdateAccountSettingsRequestFromDiscriminatorValue(parseNo
 export function createUpdateProfileRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoUpdateProfileRequest;
 }
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {UserStatisticsResponse}
+ */
+// @ts-ignore
+export function createUserStatisticsResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoUserStatisticsResponse;
+}
 export interface CreatorBadgeResponse extends AdditionalDataHolder, Parsable {
     /**
      * The awardedAt property
@@ -636,6 +654,20 @@ export function deserializeIntoFavoriteResponse(favoriteResponse: Partial<Favori
         "createdAt": n => { favoriteResponse.createdAt = n.getDateValue(); },
         "id": n => { favoriteResponse.id = n.getGuidValue(); },
         "recipeId": n => { favoriteResponse.recipeId = n.getGuidValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param FollowUserResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoFollowUserResponse(followUserResponse: Partial<FollowUserResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "createdAt": n => { followUserResponse.createdAt = n.getDateValue(); },
+        "followedUserId": n => { followUserResponse.followedUserId = n.getStringValue(); },
+        "followerUserId": n => { followUserResponse.followerUserId = n.getStringValue(); },
+        "id": n => { followUserResponse.id = n.getGuidValue(); },
     }
 }
 /**
@@ -1068,6 +1100,19 @@ export function deserializeIntoUpdateProfileRequest(updateProfileRequest: Partia
         "profilePhotoUrl": n => { updateProfileRequest.profilePhotoUrl = n.getStringValue(); },
     }
 }
+/**
+ * The deserialization information for the current model
+ * @param UserStatisticsResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoUserStatisticsResponse(userStatisticsResponse: Partial<UserStatisticsResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "followers": n => { userStatisticsResponse.followers = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "likesReceived": n => { userStatisticsResponse.likesReceived = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "publishedRecipes": n => { userStatisticsResponse.publishedRecipes = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+    }
+}
 export interface Dish extends AdditionalDataHolder, Parsable {
     /**
      * The id property
@@ -1111,6 +1156,24 @@ export interface FavoriteResponse extends AdditionalDataHolder, Parsable {
      * The recipeId property
      */
     recipeId?: Guid | null;
+}
+export interface FollowUserResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The followedUserId property
+     */
+    followedUserId?: string | null;
+    /**
+     * The followerUserId property
+     */
+    followerUserId?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
 }
 export interface ForgotPasswordRequest extends AdditionalDataHolder, Parsable {
     /**
@@ -1709,6 +1772,21 @@ export function serializeFavoriteResponse(writer: SerializationWriter, favoriteR
 }
 /**
  * Serializes information the current object
+ * @param FollowUserResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeFollowUserResponse(writer: SerializationWriter, followUserResponse: Partial<FollowUserResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!followUserResponse || isSerializingDerivedType) { return; }
+    writer.writeDateValue("createdAt", followUserResponse.createdAt);
+    writer.writeStringValue("followedUserId", followUserResponse.followedUserId);
+    writer.writeStringValue("followerUserId", followUserResponse.followerUserId);
+    writer.writeGuidValue("id", followUserResponse.id);
+    writer.writeAdditionalData(followUserResponse.additionalData);
+}
+/**
+ * Serializes information the current object
  * @param ForgotPasswordRequest The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -2168,6 +2246,20 @@ export function serializeUpdateProfileRequest(writer: SerializationWriter, updat
     writer.writeStringValue("profilePhotoUrl", updateProfileRequest.profilePhotoUrl);
     writer.writeAdditionalData(updateProfileRequest.additionalData);
 }
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param UserStatisticsResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeUserStatisticsResponse(writer: SerializationWriter, userStatisticsResponse: Partial<UserStatisticsResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!userStatisticsResponse || isSerializingDerivedType) { return; }
+    writer.writeObjectValue("followers", userStatisticsResponse.followers);
+    writer.writeObjectValue("likesReceived", userStatisticsResponse.likesReceived);
+    writer.writeObjectValue("publishedRecipes", userStatisticsResponse.publishedRecipes);
+    writer.writeAdditionalData(userStatisticsResponse.additionalData);
+}
 export interface TwoFactorRequest extends AdditionalDataHolder, Parsable {
     /**
      * The enable property
@@ -2255,6 +2347,20 @@ export interface UpdateProfileRequest extends AdditionalDataHolder, Parsable {
      * The profilePhotoUrl property
      */
     profilePhotoUrl?: string | null;
+}
+export interface UserStatisticsResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The followers property
+     */
+    followers?: UntypedNode | null;
+    /**
+     * The likesReceived property
+     */
+    likesReceived?: UntypedNode | null;
+    /**
+     * The publishedRecipes property
+     */
+    publishedRecipes?: UntypedNode | null;
 }
 /* tslint:enable */
 /* eslint-enable */
