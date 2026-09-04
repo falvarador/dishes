@@ -410,6 +410,101 @@
         }
       }
     },
+    "/api/user/statistics": {
+      "get": {
+        "tags": [
+          "Identity"
+        ],
+        "description": "Get the currently authenticated user's creator statistics.",
+        "operationId": "GetUserStatistics",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatisticsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/user/follows/{userId}": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "description": "Follow another creator.",
+        "operationId": "FollowUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Identity"
+        ],
+        "description": "Unfollow a creator.",
+        "operationId": "UnfollowUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/account/settings": {
       "get": {
         "tags": [
@@ -1646,6 +1741,31 @@
           }
         }
       },
+      "FollowUserResponse": {
+        "required": [
+          "id",
+          "followerUserId",
+          "followedUserId",
+          "createdAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "followerUserId": {
+            "type": "string"
+          },
+          "followedUserId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "ForgotPasswordRequest": {
         "required": [
           "email"
@@ -2514,6 +2634,40 @@
               "null",
               "string"
             ]
+          }
+        }
+      },
+      "UserStatisticsResponse": {
+        "required": [
+          "publishedRecipes",
+          "likesReceived",
+          "followers"
+        ],
+        "type": "object",
+        "properties": {
+          "publishedRecipes": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "likesReceived": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "followers": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
           }
         }
       }

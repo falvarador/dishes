@@ -18,6 +18,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<UserRecipeFavorite> UserRecipeFavorites { get; set; } = null!;
     public DbSet<Badge> Badges { get; set; } = null!;
     public DbSet<UserBadge> UserBadges { get; set; } = null!;
+    public DbSet<UserFollow> UserFollows { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -259,6 +260,27 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .Entity<UserBadge>()
             .HasIndex(ub => new { ub.UserId, ub.BadgeId })
             .IsUnique();
+
+        _ = modelBuilder.Entity<UserFollow>()
+            .HasOne(f => f.Follower)
+            .WithMany()
+            .HasForeignKey(f => f.FollowerUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        _ = modelBuilder.Entity<UserFollow>()
+            .HasOne(f => f.Followed)
+            .WithMany()
+            .HasForeignKey(f => f.FollowedUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        _ = modelBuilder
+            .Entity<UserFollow>()
+            .HasIndex(f => new { f.FollowerUserId, f.FollowedUserId })
+            .IsUnique();
+
+        _ = modelBuilder
+            .Entity<UserFollow>()
+            .HasIndex(f => f.FollowedUserId);
 
         base.OnModelCreating(modelBuilder);
     }
