@@ -26,6 +26,9 @@ public class Recipe
     [MaxLength(500)]
     public string? CoverPhotoPath { get; set; }
 
+    [MaxLength(500)]
+    public string? VideoUrl { get; set; }
+
     [Required]
     [MaxLength(50)]
     public required string PrepTime { get; set; }

@@ -19,6 +19,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<Badge> Badges { get; set; } = null!;
     public DbSet<UserBadge> UserBadges { get; set; } = null!;
     public DbSet<UserFollow> UserFollows { get; set; } = null!;
+    public DbSet<UserAchievement> UserAchievements { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -281,6 +282,23 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         _ = modelBuilder
             .Entity<UserFollow>()
             .HasIndex(f => f.FollowedUserId);
+
+        // Configure UserAchievement relationships
+        _ = modelBuilder.Entity<UserAchievement>()
+            .HasOne(ua => ua.User)
+            .WithMany()
+            .HasForeignKey(ua => ua.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Add unique constraint for user achievements (user cannot have same achievement twice)
+        _ = modelBuilder
+            .Entity<UserAchievement>()
+            .HasIndex(ua => new { ua.UserId, ua.AchievementId })
+            .IsUnique();
+
+        _ = modelBuilder
+            .Entity<UserAchievement>()
+            .HasIndex(ua => ua.UserId);
 
         base.OnModelCreating(modelBuilder);
     }
