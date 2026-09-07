@@ -37,10 +37,12 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 builder.Services.AddOpenApi();
 builder.Services.AddValidation();
 builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
+builder.Services.AddScoped<IEvaluateAchievementsService, EvaluateAchievementsService>();
 builder.Services.AddScoped<GetProfileHandler>();
 builder.Services.AddScoped<UpdateProfileHandler>();
 builder.Services.AddScoped<GetUserBadgesHandler>();
 builder.Services.AddScoped<GetUserStatisticsHandler>();
+builder.Services.AddScoped<GetUserAchievementsHandler>();
 builder.Services.AddScoped<FollowUserHandler>();
 builder.Services.AddScoped<UnfollowUserHandler>();
 builder.Services.AddScoped<GetAccountSettingsHandler>();

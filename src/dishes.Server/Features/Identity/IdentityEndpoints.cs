@@ -48,6 +48,12 @@ public static class IdentityEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound);
 
+        routes.MapGet("/achievements", GetAchievements)
+            .WithName("GetAchievements")
+            .WithDescription("Get the unlocked achievements of the currently authenticated user.")
+            .Produces<List<AchievementResponse>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized);
+
         return routes;
     }
 
@@ -122,4 +128,20 @@ public static class IdentityEndpoints
 
         return await handler.HandleAsync(followerUserId, userId, context, httpContext.RequestAborted);
     }
+
+    private static async Task<IResult> GetAchievements(
+        [FromServices] GetUserAchievementsHandler handler,
+        HttpContext httpContext)
+    {
+        try
+        {
+            var achievements = await handler.HandleAsync(httpContext.User);
+            return Results.Ok(achievements);
+        }
+        catch (InvalidOperationException)
+        {
+            return Results.Unauthorized();
+        }
+    }
 }
+

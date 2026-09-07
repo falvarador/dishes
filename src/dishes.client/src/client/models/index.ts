@@ -60,6 +60,32 @@ export interface AccountSettingsResponse extends AdditionalDataHolder, Parsable 
      */
     userName?: string | null;
 }
+export interface AchievementResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The createdAt property
+     */
+    createdAt?: Date | null;
+    /**
+     * The description property
+     */
+    description?: string | null;
+    /**
+     * The icon property
+     */
+    icon?: string | null;
+    /**
+     * The id property
+     */
+    id?: string | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+    /**
+     * The unlockedAt property
+     */
+    unlockedAt?: Date | null;
+}
 export interface BadgeResponse extends AdditionalDataHolder, Parsable {
     /**
      * The awardedAt property
@@ -99,6 +125,15 @@ export function createAccessTokenResponseFromDiscriminatorValue(parseNode: Parse
 // @ts-ignore
 export function createAccountSettingsResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoAccountSettingsResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AchievementResponse}
+ */
+// @ts-ignore
+export function createAchievementResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAchievementResponse;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -555,6 +590,22 @@ export function deserializeIntoAccountSettingsResponse(accountSettingsResponse: 
         "location": n => { accountSettingsResponse.location = n.getStringValue(); },
         "profilePhotoUrl": n => { accountSettingsResponse.profilePhotoUrl = n.getStringValue(); },
         "userName": n => { accountSettingsResponse.userName = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AchievementResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAchievementResponse(achievementResponse: Partial<AchievementResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "createdAt": n => { achievementResponse.createdAt = n.getDateValue(); },
+        "description": n => { achievementResponse.description = n.getStringValue(); },
+        "icon": n => { achievementResponse.icon = n.getStringValue(); },
+        "id": n => { achievementResponse.id = n.getStringValue(); },
+        "name": n => { achievementResponse.name = n.getStringValue(); },
+        "unlockedAt": n => { achievementResponse.unlockedAt = n.getDateValue(); },
     }
 }
 /**
@@ -1663,6 +1714,23 @@ export function serializeAccountSettingsResponse(writer: SerializationWriter, ac
     writer.writeStringValue("profilePhotoUrl", accountSettingsResponse.profilePhotoUrl);
     writer.writeStringValue("userName", accountSettingsResponse.userName);
     writer.writeAdditionalData(accountSettingsResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param AchievementResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAchievementResponse(writer: SerializationWriter, achievementResponse: Partial<AchievementResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!achievementResponse || isSerializingDerivedType) { return; }
+    writer.writeDateValue("createdAt", achievementResponse.createdAt);
+    writer.writeStringValue("description", achievementResponse.description);
+    writer.writeStringValue("icon", achievementResponse.icon);
+    writer.writeStringValue("id", achievementResponse.id);
+    writer.writeStringValue("name", achievementResponse.name);
+    writer.writeDateValue("unlockedAt", achievementResponse.unlockedAt);
+    writer.writeAdditionalData(achievementResponse.additionalData);
 }
 /**
  * Serializes information the current object

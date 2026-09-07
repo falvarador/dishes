@@ -505,6 +505,33 @@
         }
       }
     },
+    "/api/user/achievements": {
+      "get": {
+        "tags": [
+          "Identity"
+        ],
+        "description": "Get the unlocked achievements of the currently authenticated user.",
+        "operationId": "GetAchievements",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AchievementResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/account/settings": {
       "get": {
         "tags": [
@@ -1544,6 +1571,31 @@
           "profilePhotoUrl": {
             "maxLength": 500,
             "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AchievementResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "unlockedAt": {
+            "type": "string",
+            "format": "date-time"
           },
           "createdAt": {
             "type": "string",
