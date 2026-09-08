@@ -14,7 +14,7 @@ public class GetRecipesListRequest
     /// <summary>Filter by creator ID</summary>
     public Guid? CreatorId { get; set; }
 
-    /// <summary>Search by title or description (partial match)</summary>
+    /// <summary>Search by title or ingredient name (partial match)</summary>
     public string? Search { get; set; }
 
     /// <summary>Page number (1-based)</summary>

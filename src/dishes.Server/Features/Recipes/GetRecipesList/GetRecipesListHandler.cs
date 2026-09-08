@@ -53,10 +53,10 @@ public static class GetRecipesListHandler
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var searchTerm = search.ToLower();
+            var searchTerm = search.Trim().ToLower();
             query = query.Where(r =>
                 r.Title.ToLower().Contains(searchTerm) ||
-                r.Description.ToLower().Contains(searchTerm));
+                r.Ingredients.Any(i => i.IngredientName.ToLower().Contains(searchTerm)));
         }
 
         // Get total count before pagination
