@@ -549,7 +549,8 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     public async Task DeleteRecipe_ReturnsNoContent_WhenRecipeExists()
     {
         await ClearRecipesAsync();
-        var recipe = await SeedRecipeAsync("Recipe to Delete", "Test");
+        var (creatorUserId, _) = await CreateAndAuthenticateUserAsync("delete_test_user_1");
+        var recipe = await SeedRecipeAsync("Recipe to Delete", "Test", creatorUserId);
 
         var deleteResponse = await _client.DeleteAsync($"/api/recipes/{recipe.Id}");
 
@@ -563,6 +564,7 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task DeleteRecipe_ReturnsNotFound_WhenRecipeDoesNotExist()
     {
+        await CreateAndAuthenticateUserAsync("delete_test_user_2");
         var response = await _client.DeleteAsync($"/api/recipes/{Guid.NewGuid()}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -572,7 +574,8 @@ public class RecipesCrudTests : IClassFixture<CustomWebApplicationFactory>
     public async Task DeleteRecipe_CascadeDeletesIngredientsAndInstructions()
     {
         await ClearRecipesAsync();
-        var recipe = await SeedRecipeAsync("Recipe with Items", "Test");
+        var (creatorUserId, _) = await CreateAndAuthenticateUserAsync("delete_test_user_3");
+        var recipe = await SeedRecipeAsync("Recipe with Items", "Test", creatorUserId);
 
         using var scope = _factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
