@@ -205,13 +205,21 @@ public class GetRecipesListTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task GetRecipesList_SearchesByDescription()
+    public async Task GetRecipesList_SearchesByIngredientName()
     {
         await ClearRecipesAsync();
 
-        await SeedRecipeAsync("Pasta Carbonara", "Classic Italian pasta dish");
-        await SeedRecipeAsync("Beef Stew", "Hearty beef and vegetable pasta");
+        var recipe1 = await SeedRecipeAsync("Pasta Carbonara", "Classic Italian dish");
+        var recipe2 = await SeedRecipeAsync("Beef Stew", "Hearty beef and vegetable stew");
         await SeedRecipeAsync("Chocolate Cake", "Sweet chocolate dessert");
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            context.RecipeIngredients.Add(new RecipeIngredient(Guid.NewGuid(), recipe1.Id, "Pasta", 1m, "cup"));
+            context.RecipeIngredients.Add(new RecipeIngredient(Guid.NewGuid(), recipe2.Id, "Whole Wheat Pasta", 1m, "cup"));
+            await context.SaveChangesAsync();
+        }
 
         var response = await _client.GetAsync("/api/recipes?search=pasta");
 
@@ -219,6 +227,50 @@ public class GetRecipesListTests : IClassFixture<CustomWebApplicationFactory>
         var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
         Assert.NotNull(result);
         Assert.Equal(2, result!.TotalCount);
+    }
+
+    [Fact]
+    public async Task GetRecipesList_SearchesByTitleOrIngredient_WithoutDuplicates()
+    {
+        await ClearRecipesAsync();
+
+        var titleMatch = await SeedRecipeAsync("Pasta Bake", "Baked dish");
+        var ingredientMatch = await SeedRecipeAsync("Tomato Soup", "Simple soup");
+        var bothMatch = await SeedRecipeAsync("Pasta Salad", "Fresh salad");
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            context.RecipeIngredients.Add(new RecipeIngredient(Guid.NewGuid(), ingredientMatch.Id, "Pasta", 1m, "cup"));
+            context.RecipeIngredients.Add(new RecipeIngredient(Guid.NewGuid(), bothMatch.Id, "Pasta", 1m, "cup"));
+            await context.SaveChangesAsync();
+        }
+
+        var response = await _client.GetAsync("/api/recipes?search=pasta");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
+        Assert.NotNull(result);
+        Assert.Equal(3, result!.TotalCount);
+        Assert.Equal(3, result.Data.Select(r => r.Id).Distinct().Count());
+    }
+
+    [Fact]
+    public async Task GetRecipesList_SearchWithWhitespaceOnly_ReturnsUnfilteredCatalog()
+    {
+        await ClearRecipesAsync();
+
+        await SeedRecipeAsync("Recipe 1", "Test 1");
+        await SeedRecipeAsync("Recipe 2", "Test 2");
+        await SeedRecipeAsync("Recipe 3", "Test 3");
+
+        var response = await _client.GetAsync("/api/recipes?search=%20%20%20");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
+        Assert.NotNull(result);
+        Assert.Equal(3, result!.TotalCount);
+        Assert.Equal(3, result.Data.Count);
     }
 
     [Fact]
