@@ -55,8 +55,8 @@ public static class GetRecipesListHandler
         {
             var searchTerm = search.Trim().ToLower();
             query = query.Where(r =>
-                r.Title.ToLower().Contains(searchTerm) ||
-                r.Ingredients.Any(i => i.IngredientName.ToLower().Contains(searchTerm)));
+                r.Title.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase) ||
+                r.Ingredients.Any(i => i.IngredientName.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase)));
         }
 
         // Get total count before pagination
@@ -131,8 +131,7 @@ public static class GetRecipesListHandler
         routes.MapGet("", HandleAsync)
             .WithName("GetRecipesList")
             .WithDescription("Get a list of recipes with filtering, searching, and pagination")
-            .Produces<PaginatedRecipesResponse>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .Produces<PaginatedRecipesResponse>(StatusCodes.Status200OK);
 
         return routes;
     }

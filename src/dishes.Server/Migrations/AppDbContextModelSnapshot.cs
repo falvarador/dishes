@@ -29,7 +29,7 @@ namespace dishes.Server.Migrations
 
                     b.HasIndex("IngredientsId");
 
-                    b.ToTable("DishIngredient");
+                    b.ToTable("DishIngredient", (string)null);
 
                     b.HasData(
                         new
@@ -480,7 +480,7 @@ namespace dishes.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Badges");
+                    b.ToTable("Badges", (string)null);
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.Dish", b =>
@@ -496,7 +496,7 @@ namespace dishes.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Dishes");
+                    b.ToTable("Dishes", (string)null);
 
                     b.HasData(
                         new
@@ -539,7 +539,7 @@ namespace dishes.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
 
                     b.HasData(
                         new
@@ -709,9 +709,13 @@ namespace dishes.Server.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("VideoUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
 
                     b.HasData(
                         new
@@ -755,7 +759,7 @@ namespace dishes.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RecipeCategories");
+                    b.ToTable("RecipeCategories", (string)null);
 
                     b.HasData(
                         new
@@ -831,7 +835,7 @@ namespace dishes.Server.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("RecipeIngredients");
+                    b.ToTable("RecipeIngredients", (string)null);
 
                     b.HasData(
                         new
@@ -889,7 +893,7 @@ namespace dishes.Server.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("RecipeInstructions");
+                    b.ToTable("RecipeInstructions", (string)null);
 
                     b.HasData(
                         new
@@ -934,7 +938,7 @@ namespace dishes.Server.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("RecipeRecipeCategory");
+                    b.ToTable("RecipeRecipeCategory", (string)null);
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.RecipeRecipeTag", b =>
@@ -949,7 +953,7 @@ namespace dishes.Server.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("RecipeRecipeTag");
+                    b.ToTable("RecipeRecipeTag", (string)null);
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.RecipeTag", b =>
@@ -965,7 +969,7 @@ namespace dishes.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RecipeTags");
+                    b.ToTable("RecipeTags", (string)null);
 
                     b.HasData(
                         new
@@ -1022,7 +1026,7 @@ namespace dishes.Server.Migrations
                     b.HasIndex("UserId", "AchievementId")
                         .IsUnique();
 
-                    b.ToTable("UserAchievements");
+                    b.ToTable("UserAchievements", (string)null);
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.UserBadge", b =>
@@ -1048,7 +1052,7 @@ namespace dishes.Server.Migrations
                     b.HasIndex("UserId", "BadgeId")
                         .IsUnique();
 
-                    b.ToTable("UserBadges");
+                    b.ToTable("UserBadges", (string)null);
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.UserFollow", b =>
@@ -1075,7 +1079,7 @@ namespace dishes.Server.Migrations
                     b.HasIndex("FollowerUserId", "FollowedUserId")
                         .IsUnique();
 
-                    b.ToTable("UserFollows");
+                    b.ToTable("UserFollows", (string)null);
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeFavorite", b =>
@@ -1100,7 +1104,7 @@ namespace dishes.Server.Migrations
                     b.HasIndex("UserId", "RecipeId")
                         .IsUnique();
 
-                    b.ToTable("UserRecipeFavorites");
+                    b.ToTable("UserRecipeFavorites", (string)null);
                 });
 
             modelBuilder.Entity("dishes.Server.Data.Entities.UserRecipeRating", b =>
@@ -1131,7 +1135,7 @@ namespace dishes.Server.Migrations
                     b.HasIndex("UserId", "RecipeId")
                         .IsUnique();
 
-                    b.ToTable("UserRecipeRatings");
+                    b.ToTable("UserRecipeRatings", (string)null);
                 });
 
             modelBuilder.Entity("DishIngredient", b =>
