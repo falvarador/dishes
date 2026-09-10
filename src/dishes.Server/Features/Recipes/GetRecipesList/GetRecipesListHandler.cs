@@ -14,6 +14,8 @@ public static class GetRecipesListHandler
         [FromQuery] Guid? creatorId,
         [FromQuery] string? search,
         [FromQuery] string? categories,
+        [FromQuery] int? limit,
+        [FromQuery] int? offset,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] string? sortBy = "CreatedAt",
@@ -21,10 +23,29 @@ public static class GetRecipesListHandler
         AppDbContext context = default!,
         CancellationToken cancellationToken = default)
     {
-        // Validate pagination parameters
-        if (page < 1) page = 1;
-        if (pageSize < 1) pageSize = 1;
-        if (pageSize > 100) pageSize = 100;
+        // Support both limit/offset and page/pageSize parameters
+        // limit/offset takes precedence if provided
+        if (limit.HasValue || offset.HasValue)
+        {
+            int pagination_limit = limit ?? 12;
+            int pagination_offset = offset ?? 0;
+
+            if (pagination_limit < 1) pagination_limit = 1;
+            if (pagination_limit > 100) pagination_limit = 100;
+            if (pagination_offset < 0) pagination_offset = 0;
+
+            // Convert to page/pageSize for internal use
+            pageSize = pagination_limit;
+            page = (pagination_offset / pagination_limit) + 1;
+        }
+        else
+        {
+            // Validate page/pageSize parameters
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 1;
+            if (pageSize > 100) pageSize = 100;
+        }
+
         if (string.IsNullOrWhiteSpace(sortOrder) || (sortOrder != "asc" && sortOrder != "desc"))
             sortOrder = "desc";
 

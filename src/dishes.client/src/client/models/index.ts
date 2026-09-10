@@ -318,6 +318,15 @@ export function createPaginatedRecipesResponseFromDiscriminatorValue(parseNode: 
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {PaginationMetadata}
+ */
+// @ts-ignore
+export function createPaginationMetadataFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoPaginationMetadata;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {RateRecipeRequest}
  */
 // @ts-ignore
@@ -870,8 +879,23 @@ export function deserializeIntoPaginatedRecipesResponse(paginatedRecipesResponse
         "hasPreviousPage": n => { paginatedRecipesResponse.hasPreviousPage = n.getBooleanValue(); },
         "page": n => { paginatedRecipesResponse.page = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
         "pageSize": n => { paginatedRecipesResponse.pageSize = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "pagination": n => { paginatedRecipesResponse.pagination = n.getObjectValue<PaginationMetadata>(createPaginationMetadataFromDiscriminatorValue); },
         "totalCount": n => { paginatedRecipesResponse.totalCount = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
         "totalPages": n => { paginatedRecipesResponse.totalPages = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param PaginationMetadata The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoPaginationMetadata(paginationMetadata: Partial<PaginationMetadata> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "hasMore": n => { paginationMetadata.hasMore = n.getBooleanValue(); },
+        "limit": n => { paginationMetadata.limit = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "offset": n => { paginationMetadata.offset = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
+        "total": n => { paginationMetadata.total = n.getObjectValue<UntypedNode>(createUntypedNodeFromDiscriminatorValue); },
     }
 }
 /**
@@ -1374,6 +1398,10 @@ export interface PaginatedRecipesResponse extends AdditionalDataHolder, Parsable
      */
     pageSize?: UntypedNode | null;
     /**
+     * The pagination property
+     */
+    pagination?: PaginationMetadata | null;
+    /**
      * The totalCount property
      */
     totalCount?: UntypedNode | null;
@@ -1381,6 +1409,24 @@ export interface PaginatedRecipesResponse extends AdditionalDataHolder, Parsable
      * The totalPages property
      */
     totalPages?: UntypedNode | null;
+}
+export interface PaginationMetadata extends AdditionalDataHolder, Parsable {
+    /**
+     * The hasMore property
+     */
+    hasMore?: boolean | null;
+    /**
+     * The limit property
+     */
+    limit?: UntypedNode | null;
+    /**
+     * The offset property
+     */
+    offset?: UntypedNode | null;
+    /**
+     * The total property
+     */
+    total?: UntypedNode | null;
 }
 export interface RateRecipeRequest extends AdditionalDataHolder, Parsable {
     /**
@@ -2014,9 +2060,25 @@ export function serializePaginatedRecipesResponse(writer: SerializationWriter, p
     writer.writeBooleanValue("hasPreviousPage", paginatedRecipesResponse.hasPreviousPage);
     writer.writeObjectValue("page", paginatedRecipesResponse.page);
     writer.writeObjectValue("pageSize", paginatedRecipesResponse.pageSize);
+    writer.writeObjectValue<PaginationMetadata>("pagination", paginatedRecipesResponse.pagination, serializePaginationMetadata);
     writer.writeObjectValue("totalCount", paginatedRecipesResponse.totalCount);
     writer.writeObjectValue("totalPages", paginatedRecipesResponse.totalPages);
     writer.writeAdditionalData(paginatedRecipesResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param PaginationMetadata The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializePaginationMetadata(writer: SerializationWriter, paginationMetadata: Partial<PaginationMetadata> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!paginationMetadata || isSerializingDerivedType) { return; }
+    writer.writeBooleanValue("hasMore", paginationMetadata.hasMore);
+    writer.writeObjectValue("limit", paginationMetadata.limit);
+    writer.writeObjectValue("offset", paginationMetadata.offset);
+    writer.writeObjectValue("total", paginationMetadata.total);
+    writer.writeAdditionalData(paginationMetadata.additionalData);
 }
 /**
  * Serializes information the current object

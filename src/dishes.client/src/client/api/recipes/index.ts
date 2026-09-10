@@ -59,6 +59,8 @@ export interface RecipesRequestBuilderGetQueryParameters {
     categories?: string;
     creatorId?: Guid;
     difficulty?: string;
+    limit?: string;
+    offset?: string;
     page?: string;
     pageSize?: string;
     prepTime?: string;
@@ -70,7 +72,7 @@ export interface RecipesRequestBuilderGetQueryParameters {
 /**
  * Uri template for the request builder.
  */
-export const RecipesRequestBuilderUriTemplate = "{+baseurl}/api/recipes{?categories*,creatorId*,difficulty*,page*,pageSize*,prepTime*,search*,sortBy*,sortOrder*,status*}";
+export const RecipesRequestBuilderUriTemplate = "{+baseurl}/api/recipes{?categories*,creatorId*,difficulty*,limit*,offset*,page*,pageSize*,prepTime*,search*,sortBy*,sortOrder*,status*}";
 /**
  * Metadata for all the navigation properties in the request builder.
  */

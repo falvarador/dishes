@@ -484,4 +484,131 @@ public class GetRecipesListTests : IClassFixture<CustomWebApplicationFactory>
         Assert.Equal(100, result!.PageSize);
         Assert.Equal(100, result.Data.Count);
     }
+
+    [Fact]
+    public async Task GetRecipesList_WithLimitAndOffset_ReturnsCorrectPage()
+    {
+        await ClearRecipesAsync();
+
+        // Create 25 test recipes
+        for (int i = 1; i <= 25; i++)
+        {
+            await SeedRecipeAsync($"Recipe {i:D2}", $"Description {i}");
+        }
+
+        // Request with limit=10, offset=0 (first page)
+        var response = await _client.GetAsync("/api/recipes?limit=10&offset=0");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
+        Assert.NotNull(result);
+        Assert.Equal(25, result!.TotalCount);
+        Assert.Equal(10, result.Data.Count);
+        Assert.NotNull(result.Pagination);
+        Assert.Equal(25, result.Pagination.Total);
+        Assert.Equal(10, result.Pagination.Limit);
+        Assert.Equal(0, result.Pagination.Offset);
+        Assert.True(result.Pagination.HasMore); // offset + limit (10) < total (25)
+    }
+
+    [Fact]
+    public async Task GetRecipesList_WithLimitAndOffset_SecondPage()
+    {
+        await ClearRecipesAsync();
+
+        // Create 25 test recipes
+        for (int i = 1; i <= 25; i++)
+        {
+            await SeedRecipeAsync($"Recipe {i:D2}", $"Description {i}");
+        }
+
+        // Request with limit=10, offset=10 (second page)
+        var response = await _client.GetAsync("/api/recipes?limit=10&offset=10");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
+        Assert.NotNull(result);
+        Assert.Equal(25, result!.TotalCount);
+        Assert.Equal(10, result.Data.Count);
+        Assert.NotNull(result.Pagination);
+        Assert.Equal(10, result.Pagination.Offset);
+        Assert.True(result.Pagination.HasMore); // offset + limit (20) < total (25)
+    }
+
+    [Fact]
+    public async Task GetRecipesList_WithLimitAndOffset_LastPage()
+    {
+        await ClearRecipesAsync();
+
+        // Create 25 test recipes
+        for (int i = 1; i <= 25; i++)
+        {
+            await SeedRecipeAsync($"Recipe {i:D2}", $"Description {i}");
+        }
+
+        // Request with limit=10, offset=20 (last page with 5 items)
+        var response = await _client.GetAsync("/api/recipes?limit=10&offset=20");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
+        Assert.NotNull(result);
+        Assert.Equal(25, result!.TotalCount);
+        Assert.Equal(5, result.Data.Count); // Only 5 items left
+        Assert.NotNull(result.Pagination);
+        Assert.Equal(20, result.Pagination.Offset);
+        Assert.False(result.Pagination.HasMore); // offset + limit (30) >= total (25)
+    }
+
+    [Fact]
+    public async Task GetRecipesList_WithLimitAndOffset_AndFilter()
+    {
+        await ClearRecipesAsync();
+
+        // Create 15 Easy recipes and 10 Hard recipes
+        for (int i = 1; i <= 15; i++)
+        {
+            await SeedRecipeAsync($"Easy Recipe {i}", "Easy cooking", difficulty: "Easy");
+        }
+        for (int i = 1; i <= 10; i++)
+        {
+            await SeedRecipeAsync($"Hard Recipe {i}", "Hard cooking", difficulty: "Hard");
+        }
+
+        // Request with difficulty filter and pagination
+        var response = await _client.GetAsync("/api/recipes?difficulty=Easy&limit=5&offset=0");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
+        Assert.NotNull(result);
+        Assert.Equal(15, result!.TotalCount); // Only Easy recipes count
+        Assert.Equal(5, result.Data.Count);
+        Assert.All(result.Data, recipe => Assert.Contains("Easy Recipe", recipe.Title));
+        Assert.NotNull(result.Pagination);
+        Assert.Equal(15, result.Pagination.Total);
+        Assert.True(result.Pagination.HasMore);
+    }
+
+    [Fact]
+    public async Task GetRecipesList_DefaultLimitIsUsed_WhenOffsetProvided()
+    {
+        await ClearRecipesAsync();
+
+        // Create 20 recipes
+        for (int i = 1; i <= 20; i++)
+        {
+            await SeedRecipeAsync($"Recipe {i}", "Test");
+        }
+
+        // Request with offset but no limit (should use default limit of 12)
+        var response = await _client.GetAsync("/api/recipes?offset=0");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PaginatedRecipesResponse>();
+        Assert.NotNull(result);
+        Assert.Equal(20, result!.TotalCount);
+        Assert.Equal(12, result.Data.Count); // Default limit
+        Assert.NotNull(result.Pagination);
+        Assert.Equal(12, result.Pagination.Limit);
+    }
 }
+
