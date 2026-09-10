@@ -1,0 +1,66 @@
+## 1. Backend: Pagination Query Implementation
+
+- [ ] 1.1 Modify `GetRecipesListHandler.HandleAsync` to accept `limit` (default 12) and `offset` (default 0) query parameters and verify they are parsed correctly by writing a unit test
+- [ ] 1.2 Refactor query to calculate total count of matching recipes before pagination (using `CountAsync()` on filtered query) and verify total is correct in unit tests with and without filters
+- [ ] 1.3 Apply `Take(limit).Skip(offset)` to EF Core query materialization and verify results contain correct recipes for offset values (0, 12, 24) in unit tests
+- [ ] 1.4 Create response model with `PaginatedRecipesResponse` including `pagination` metadata object with fields: `total`, `limit`, `offset`, `hasMore` and verify serialization in unit tests
+
+## 2. Backend: API Response Integration
+
+- [ ] 2.1 Update `GetRecipesListHandler` to return paginated response structure with `data` array and `pagination` metadata object and verify HTTP 200 is returned
+- [ ] 2.2 Ensure `hasMore` boolean is calculated correctly (`offset + limit < total`) and verify true/false cases in unit tests
+- [ ] 2.3 Test pagination with combination of filters (category, difficulty, prepTime, search) and verify total count reflects only filtered results and no duplicates in integration tests
+- [ ] 2.4 Add integration tests for edge cases: empty results, single page, exact page boundary, last page with partial results
+
+## 3. Frontend: Query Parameter Management
+
+- [ ] 3.1 Extend `useRecipeFilters.ts` composable to parse `limit` and `offset` from URL query parameters with defaults (12 and 0) and write unit tests for URL parsing
+- [ ] 3.2 Extend `generateQueryParams()` in `useRecipeFilters` to include `limit` and `offset` in generated query string and verify URL is built correctly
+- [ ] 3.3 Add methods to `useRecipeFilters` to calculate next/previous offsets and expose computed properties: `canGoNext`, `canGoPrevious`, `currentPageNumber` and write tests for boundary conditions
+
+## 4. Frontend: API Fetch with Pagination
+
+- [ ] 4.1 Update `useRecipeFilters` Vue Query hook to include `limit` and `offset` when fetching recipes and verify API is called with correct parameters
+- [ ] 4.2 Parse `pagination` metadata from API response in the query hook and store in reactive state and verify data is available to components
+- [ ] 4.3 Test that changing `limit` or `offset` in URL triggers new API fetch with updated parameters
+
+## 5. Frontend: UI Components
+
+- [ ] 5.1 Create `PaginationInfo.vue` component displaying "Showing X-Y of Z recipes" and verify text renders correctly with sample data
+- [ ] 5.2 Create `PaginationControls.vue` component with Previous/Next buttons, disable states at boundaries, and click handlers to update URL pagination parameters and verify button states match `canGoNext`/`canGoPrevious`
+- [ ] 5.3 Create `LoadMoreButton.vue` component showing "Load More Recipes" when `hasMore` is true, with click handler to increase offset and fetch next page, and verify button is hidden when `hasMore` is false
+- [ ] 5.4 Integrate pagination components into recipe list view (AppNew.vue or App.vue) and verify they render without errors
+
+## 6. Frontend: Load More Behavior
+
+- [ ] 6.1 Implement "Load More" button logic to append new recipes to existing list (not replace) by extending API fetch logic in `useRecipeFilters` and verify recipes from multiple "Load More" clicks are combined
+- [ ] 6.2 Verify "Load More" appending does not create duplicates across pages with unit tests
+- [ ] 6.3 Test that browser back button after "Load More" decrements the list and shows prior page content
+
+## 7. Frontend: URL State Persistence
+
+- [ ] 7.1 Verify pagination parameters persist in URL when user navigates between pages and verify URL can be bookmarked and shared
+- [ ] 7.2 Test that reloading page with pagination parameters in URL restores the same paginated view
+- [ ] 7.3 Test that combining pagination with search and filter parameters produces correct URL and results
+
+## 8. Integration & E2E Testing
+
+- [ ] 8.1 Run full integration test suite on `GetRecipesListTests` to verify no regressions in existing search/filter tests and all tests pass (minimum 21 tests from prior work)
+- [ ] 8.2 Write E2E tests for pagination workflow: load recipe list → apply filters → paginate to page 2 → change filters → verify page resets to 1
+- [ ] 8.3 Write E2E test for "Load More" workflow: load page 1 → click Load More → verify list grows and URL offset increases
+- [ ] 8.4 Test pagination on mobile viewport (320px width) to verify controls remain accessible and responsive
+- [ ] 8.5 Manual QA: Load recipe catalog, apply filters, paginate, use Load More, bookmark URL with pagination params, share URL and verify another browser sees same results
+
+## 9. Code Review & Cleanup
+
+- [ ] 9.1 Code review of backend changes: verify pagination logic, null checks, off-by-one errors, and SQL generated by EF Core
+- [ ] 9.2 Code review of frontend changes: verify Vue reactivity, computed properties update on dependency changes, no memory leaks in hooks
+- [ ] 9.3 Clean up any console logs or debug statements from implementation branches
+- [ ] 9.4 Verify no TypeScript compilation warnings in frontend build
+
+## 10. Validation & Deployment
+
+- [ ] 10.1 Run full solution build and verify no errors or warnings: `dotnet build` backend and `npm run build` frontend
+- [ ] 10.2 Verify feature branch builds successfully and all tests pass in CI/CD pipeline
+- [ ] 10.3 Manual smoke test on staging environment: load recipe list, apply multiple filters, paginate, Load More, verify totals are correct
+- [ ] 10.4 Merge feature branch to main and verify CI/CD pipeline passes on main branch
