@@ -13,6 +13,7 @@ public static class GetRecipesListHandler
         [FromQuery] string? prepTime,
         [FromQuery] Guid? creatorId,
         [FromQuery] string? search,
+        [FromQuery] string? categories,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] string? sortBy = "CreatedAt",
@@ -29,6 +30,15 @@ public static class GetRecipesListHandler
 
         // Build the base query
         IQueryable<Recipe> query = context.Recipes;
+
+        // Only include categories if we need to filter by them
+        var hasCategoryFilter = !string.IsNullOrWhiteSpace(categories);
+        if (hasCategoryFilter)
+        {
+            query = query
+                .Include(r => r.Categories)
+                .ThenInclude(rc => rc.Category);
+        }
 
         // Apply filters
         if (status.HasValue)
@@ -53,24 +63,45 @@ public static class GetRecipesListHandler
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var searchTerm = search.Trim().ToLower();
+            var searchTerm = search.Trim();
             query = query.Where(r =>
-                r.Title.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase) ||
-                r.Ingredients.Any(i => i.IngredientName.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase)));
+                r.Title.ToLower().Contains(searchTerm.ToLower()) ||
+                r.Ingredients.Any(i => i.IngredientName.ToLower().Contains(searchTerm.ToLower())));
         }
 
-        // Get total count before pagination
-        var totalCount = await query.CountAsync(cancellationToken);
+        // Filter by categories (comma-separated values)
+        if (hasCategoryFilter)
+        {
+            var categoryNames = categories.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(c => c.Trim())
+                .ToList();
 
-        // Apply sorting
-        query = ApplySorting(query, sortBy, sortOrder);
+            if (categoryNames.Count > 0)
+            {
+                query = query.Where(r => r.Categories.Any(rc =>
+                    categoryNames.Contains(rc.Category!.Name)));
+            }
+        }
 
-        // Apply pagination
-        var recipes = await query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+        // Materialize and deduplicate in memory to avoid EF Core issues with Distinct() over includes
+        var allRecipes = await query
             .Include(r => r.Ratings)
             .ToListAsync(cancellationToken);
+
+        // Remove duplicate recipes from N:M relationships (only happens if categories were included)
+        var distinctRecipes = allRecipes.DistinctBy(r => r.Id).ToList();
+
+        // Get total count after deduplication
+        var totalCount = distinctRecipes.Count;
+
+        // Apply sorting in memory
+        var sortedRecipes = ApplySortingInMemory(distinctRecipes, sortBy, sortOrder);
+
+        // Apply pagination in memory
+        var recipes = sortedRecipes
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
 
         // Map to summary responses with rating aggregates
         var data = recipes.Select(r =>
@@ -123,6 +154,41 @@ public static class GetRecipesListHandler
                 ? query.OrderByDescending(r => r.Status)
                 : query.OrderBy(r => r.Status),
             _ => query.OrderByDescending(r => r.CreatedAt) // Default sorting
+        };
+    }
+
+    private static List<Recipe> ApplySortingInMemory(
+        List<Recipe> recipes,
+        string? sortBy,
+        string? sortOrder)
+    {
+        var sortField = sortBy?.ToLower() ?? "createdat";
+        var isDescending = sortOrder?.ToLower() == "desc";
+
+        return sortField switch
+        {
+            "title" => isDescending
+                ? recipes.OrderByDescending(r => r.Title).ToList()
+                : recipes.OrderBy(r => r.Title).ToList(),
+            "difficulty" => isDescending
+                ? recipes.OrderByDescending(r => r.Difficulty).ToList()
+                : recipes.OrderBy(r => r.Difficulty).ToList(),
+            "preptime" => isDescending
+                ? recipes.OrderByDescending(r => r.PrepTime).ToList()
+                : recipes.OrderBy(r => r.PrepTime).ToList(),
+            "createdat" or "created" => isDescending
+                ? recipes.OrderByDescending(r => r.CreatedAt).ToList()
+                : recipes.OrderBy(r => r.CreatedAt).ToList(),
+            "updatedat" or "updated" => isDescending
+                ? recipes.OrderByDescending(r => r.UpdatedAt).ToList()
+                : recipes.OrderBy(r => r.UpdatedAt).ToList(),
+            "publishedat" or "published" => isDescending
+                ? recipes.OrderByDescending(r => r.PublishedAt).ToList()
+                : recipes.OrderBy(r => r.PublishedAt).ToList(),
+            "status" => isDescending
+                ? recipes.OrderByDescending(r => r.Status).ToList()
+                : recipes.OrderBy(r => r.Status).ToList(),
+            _ => recipes.OrderByDescending(r => r.CreatedAt).ToList() // Default sorting
         };
     }
 
